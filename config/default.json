@@ -1,0 +1,3 @@
+{
+    "mongoURI": "mongodb+srv://daniel:toptal-test@toptal-cluster-1vgdp.mongodb.net/<dbname>?retryWrites=true&w=majority"
+}
