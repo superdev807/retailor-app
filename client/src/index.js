@@ -1,17 +1,27 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import { StylesProvider } from '@material-ui/core/styles';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+import App from 'containers/App';
+import history from 'utils/history';
+import configureStore from 'configureStore';
+import muiTheme from './theme';
+import { ThemeProvider } from '@material-ui/core/styles';
+import 'styles/global-styles.scss';
+import 'sanitize.css/sanitize.css';
+
+const store = configureStore({}, history);
+render(
+    <Provider store={store}>
+        <StylesProvider injectFirst>
+            <ThemeProvider theme={muiTheme}>
+                <ConnectedRouter history={history}>
+                    <App />
+                </ConnectedRouter>
+            </ThemeProvider>
+        </StylesProvider>
+    </Provider>,
+    document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
