@@ -57,14 +57,14 @@ const SignIn = (props) => {
                     <div className={classes.quote}>
                         <div className={classes.quoteInner}>
                             <Typography className={classes.quoteText} variant="h1">
-                                Retailor Application
+                                <b>Retailor Application</b>
                             </Typography>
                             <div className={classes.person}>
                                 <Typography className={classes.name} variant="body1">
-                                    Daniel Jason
+                                    <b>Daniel Jason</b>
                                 </Typography>
                                 <Typography className={classes.bio} variant="body2">
-                                    NodeJS | React | MongoDB
+                                    <b>NodeJS | React | MongoDB</b>
                                 </Typography>
                             </div>
                         </div>
