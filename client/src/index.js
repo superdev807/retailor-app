@@ -10,18 +10,17 @@ import configureStore from 'configureStore';
 import muiTheme from './theme';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'styles/global-styles.scss';
-import 'sanitize.css/sanitize.css';
 
 const store = configureStore({}, history);
 render(
     <Provider store={store}>
-        <StylesProvider injectFirst>
-            <ThemeProvider theme={muiTheme}>
-                <ConnectedRouter history={history}>
+        <ConnectedRouter history={history}>
+            <StylesProvider injectFirst>
+                <ThemeProvider theme={muiTheme}>
                     <App />
-                </ConnectedRouter>
-            </ThemeProvider>
-        </StylesProvider>
+                </ThemeProvider>
+            </StylesProvider>
+        </ConnectedRouter>
     </Provider>,
     document.getElementById('root')
 );

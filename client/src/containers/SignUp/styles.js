@@ -31,6 +31,7 @@ export const useStyles = makeStyles((theme) => ({
     quoteText: {
         color: theme.palette.black,
         fontWeight: 300,
+        backgroundColor: 'rgba(100, 100, 100, 0.8)',
     },
     name: {
         marginTop: theme.spacing(3),
@@ -77,19 +78,21 @@ export const useStyles = makeStyles((theme) => ({
     title: {
         marginTop: theme.spacing(3),
     },
-    socialButtons: {
-        marginTop: theme.spacing(3),
-    },
-    socialIcon: {
-        marginRight: theme.spacing(1),
-    },
-    sugestion: {
-        marginTop: theme.spacing(2),
-    },
     textField: {
         marginTop: theme.spacing(2),
     },
-    signInButton: {
+    policy: {
+        marginTop: theme.spacing(1),
+        display: 'flex',
+        alignItems: 'center',
+    },
+    policyCheckbox: {
+        marginLeft: '-14px',
+    },
+    signUpButton: {
+        margin: theme.spacing(2, 0),
+    },
+    userSelectbox: {
         margin: theme.spacing(2, 0),
     },
 }));

@@ -4,7 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
 import get from 'lodash/get';
 
-// import { setAuthenticated } from '~/containers/App/redux/actions';
+import { setAuthenticated } from 'containers/App/redux/actions';
 
 export default function configureStore(initialState = {}, history, injectedReducers) {
     let composeEnhancers = compose;
@@ -12,9 +12,7 @@ export default function configureStore(initialState = {}, history, injectedReduc
     const reduxSagaMonitorOptions = {};
 
     // If Redux Dev Tools and Saga Dev Tools Extensions are installed, enable them
-    /* istanbul ignore next */
     if (process.env.NODE_ENV !== 'production' && typeof window === 'object') {
-        /* eslint-disable no-underscore-dangle */
         if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
             composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({});
         }
@@ -25,7 +23,6 @@ export default function configureStore(initialState = {}, history, injectedReduc
         //   reduxSagaMonitorOptions = {
         //     sagaMonitor: window.__SAGA_MONITOR_EXTENSION__,
         //   };
-        /* eslint-enable */
     }
 
     const sagaMiddleware = createSagaMiddleware(reduxSagaMonitorOptions);
@@ -44,17 +41,15 @@ export default function configureStore(initialState = {}, history, injectedReduc
     store.injectedReducers = {}; // Reducer registry
     store.injectedSagas = {}; // Saga registry
 
-    // Make reducers hot reloadable, see http://mxs.is/googmo
-    /* istanbul ignore next */
     if (module.hot) {
         module.hot.accept('./reducers', () => {
             store.replaceReducer(createReducer(store.injectedReducers));
         });
     }
 
-    /*if (get(initialState, 'global.isAuthenticated') === undefined) {
+    if (get(initialState, 'global.isAuthenticated') === undefined) {
         store.dispatch(setAuthenticated());
-    }*/
+    }
 
     return store;
 }

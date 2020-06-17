@@ -2,11 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
-import { Grid, Button, TextField, Typography } from '@material-ui/core';
+import { Grid, Button, IconButton, TextField, NativeSelect, Typography } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from 'react-router-dom';
 import { useStyles } from './styles';
 
 const schema = {
+    firstName: {
+        presence: { allowEmpty: false, message: 'is required' },
+        length: {
+            maximum: 32,
+        },
+    },
+    lastName: {
+        presence: { allowEmpty: false, message: 'is required' },
+        length: {
+            maximum: 32,
+        },
+    },
     email: {
         presence: { allowEmpty: false, message: 'is required' },
         email: true,
@@ -22,9 +35,8 @@ const schema = {
     },
 };
 
-const SignIn = () => {
+const SignUp = () => {
     const history = useHistory();
-
     const classes = useStyles();
 
     const [formState, setFormState] = useState({
@@ -36,6 +48,7 @@ const SignIn = () => {
 
     useEffect(() => {
         const errors = validate(formState.values, schema);
+
         setFormState((formState) => ({
             ...formState,
             isValid: errors ? false : true,
@@ -59,7 +72,11 @@ const SignIn = () => {
         }));
     };
 
-    const handleSignIn = (event) => {
+    const handleBack = () => {
+        history.goBack();
+    };
+
+    const handleSignUp = (event) => {
         event.preventDefault();
         history.push('/');
     };
@@ -88,11 +105,43 @@ const SignIn = () => {
                 </Grid>
                 <Grid className={classes.content} item lg={7} xs={12}>
                     <div className={classes.content}>
+                        <div className={classes.contentHeader}>
+                            <IconButton onClick={handleBack}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                        </div>
                         <div className={classes.contentBody}>
-                            <form className={classes.form} onSubmit={handleSignIn}>
+                            <form className={classes.form} onSubmit={handleSignUp}>
                                 <Typography className={classes.title} variant="h2">
-                                    Sign in
+                                    Create new account
                                 </Typography>
+                                <Typography color="textSecondary" gutterBottom>
+                                    Use your email to create new account
+                                </Typography>
+                                <TextField
+                                    className={classes.textField}
+                                    error={hasError('firstName')}
+                                    fullWidth
+                                    helperText={hasError('firstName') ? formState.errors.firstName[0] : null}
+                                    label="First name"
+                                    name="firstName"
+                                    onChange={handleChange}
+                                    type="text"
+                                    value={formState.values.firstName || ''}
+                                    variant="outlined"
+                                />
+                                <TextField
+                                    className={classes.textField}
+                                    error={hasError('lastName')}
+                                    fullWidth
+                                    helperText={hasError('lastName') ? formState.errors.lastName[0] : null}
+                                    label="Last name"
+                                    name="lastName"
+                                    onChange={handleChange}
+                                    type="text"
+                                    value={formState.values.lastName || ''}
+                                    variant="outlined"
+                                />
                                 <TextField
                                     className={classes.textField}
                                     error={hasError('email')}
@@ -117,20 +166,25 @@ const SignIn = () => {
                                     value={formState.values.password || ''}
                                     variant="outlined"
                                 />
+                                <NativeSelect className={classes.userSelectbox}>
+                                    <option>Client</option>
+                                    <option>Administrator</option>
+                                    <option>Client</option>
+                                </NativeSelect>
                                 <Button
-                                    className={classes.signInButton}
+                                    className={classes.signUpButton}
                                     color="primary"
                                     disabled={!formState.isValid}
                                     fullWidth
                                     size="large"
                                     type="submit"
                                     variant="contained">
-                                    Sign in now
+                                    Sign up now
                                 </Button>
                                 <Typography color="textSecondary" variant="body1">
-                                    Don't have an account?
-                                    <Link to="/sign-up" variant="h6">
-                                        Sign up
+                                    Have an account?{' '}
+                                    <Link to="/sign-in" variant="h6">
+                                        Sign in
                                     </Link>
                                 </Typography>
                             </form>
@@ -142,8 +196,8 @@ const SignIn = () => {
     );
 };
 
-SignIn.propTypes = {
+SignUp.propTypes = {
     history: PropTypes.object,
 };
 
-export default SignIn;
+export default SignUp;
