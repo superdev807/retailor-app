@@ -168,8 +168,8 @@ const SignUp = () => {
                                 />
                                 <NativeSelect className={classes.userSelectbox}>
                                     <option>Client</option>
+                                    <option>Retailor</option>
                                     <option>Administrator</option>
-                                    <option>Client</option>
                                 </NativeSelect>
                                 <Button
                                     className={classes.signUpButton}

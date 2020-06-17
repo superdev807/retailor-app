@@ -31,6 +31,7 @@ export const useStyles = makeStyles((theme) => ({
     quoteText: {
         color: theme.palette.black,
         fontWeight: 300,
+        backgroundColor: 'rgba(100, 100, 100, 0.8)',
     },
     name: {
         marginTop: theme.spacing(3),
