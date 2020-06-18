@@ -11,7 +11,7 @@ const User = require('../../models/User');
 router.post('/register', (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) {
-        return res.status(400).json({ message: errors });
+        return res.status(400).json({ message: 'Valdiation Error' });
     }
     User.findOne({ email: req.body.email }).then((user) => {
         if (user) {

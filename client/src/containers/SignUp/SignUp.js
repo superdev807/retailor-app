@@ -6,8 +6,11 @@ import { Grid, Button, IconButton, TextField, NativeSelect, Typography } from '@
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUp } from 'containers/App/redux/actions';
+import { signUp, setAuthError, setAuthNotification } from 'containers/App/redux/actions';
+import { makeSelectIsAuthenticated, makeSelectAuthError } from 'containers/App/redux/selectors';
+import Notification from 'components/Notification';
 import { useStyles } from './styles';
+import { makeSelectAuthNotification } from '../App/redux/selectors';
 
 const schema = {
     firstName: {
@@ -40,15 +43,23 @@ const schema = {
 const SignUp = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const isAuthenticated = useSelector(makeSelectIsAuthenticated);
+    const authError = useSelector(makeSelectAuthError);
+    const authNotification = useSelector(makeSelectAuthNotification);
     const classes = useStyles();
 
     const [formState, setFormState] = useState({
         isValid: false,
-        values: {},
+        values: { role: 'ciient' },
         touched: {},
         errors: {},
     });
-    const [alertMsg, setAlertMsg] = useState('');
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            history.push('/dashboard');
+        }
+    }, []);
 
     useEffect(() => {
         const errors = validate(formState.values, schema);
@@ -67,7 +78,7 @@ const SignUp = () => {
             ...formState,
             values: {
                 ...formState.values,
-                [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
+                [event.target.name]: event.target.value,
             },
             touched: {
                 ...formState.touched,
@@ -89,9 +100,7 @@ const SignUp = () => {
                         lastName: formState.values.lastName,
                         email: formState.values.email,
                         password: formState.values.password,
-                    },
-                    onFail: (err) => {
-                        setAlertMsg(err.message);
+                        role: formState.values.role,
                     },
                 })
             );
@@ -99,6 +108,21 @@ const SignUp = () => {
     };
 
     const hasError = (field) => (formState.touched[field] && formState.errors[field] ? true : false);
+
+    const snackErrorClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        dispatch(setAuthError(''));
+    };
+
+    const snackNotifyClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        dispatch(setAuthNotification(''));
+    };
 
     return (
         <div className={classes.root}>
@@ -128,6 +152,8 @@ const SignUp = () => {
                             </IconButton>
                         </div>
                         <div className={classes.contentBody}>
+                            <Notification message={authNotification} snackBarClose={snackNotifyClose} msgType={'success'} />
+                            <Notification error={authError} snackBarClose={snackErrorClose} msgType={'error'} />
                             <div className={classes.form}>
                                 <Typography className={classes.title} variant="h2">
                                     Create new account
@@ -183,7 +209,7 @@ const SignUp = () => {
                                     value={formState.values.password || ''}
                                     variant="outlined"
                                 />
-                                <NativeSelect className={classes.userSelectbox}>
+                                <NativeSelect className={classes.userSelectbox} onChange={handleChange} name="role">
                                     <option>Client</option>
                                     <option>Retailor</option>
                                     <option>Administrator</option>

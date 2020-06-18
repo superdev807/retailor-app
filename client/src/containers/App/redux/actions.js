@@ -7,6 +7,7 @@ import {
     SET_IS_404,
     SIGN_UP,
     SET_AUTH_ERROR,
+    SET_AUTH_NOTIFICATION,
 } from './constants';
 import { getCookie } from 'utils/cookie';
 
@@ -69,6 +70,13 @@ export function signUp(data) {
 export function setAuthError(data) {
     return {
         type: SET_AUTH_ERROR,
+        payload: data,
+    };
+}
+
+export function setAuthNotification(data) {
+    return {
+        type: SET_AUTH_NOTIFICATION,
         payload: data,
     };
 }
