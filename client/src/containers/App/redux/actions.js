@@ -1,14 +1,4 @@
-import {
-    LOG_IN_COMPLETE,
-    LOG_IN_WITH_EMAIL_PASSWORD,
-    LOG_OUT_COMPLETE,
-    LOG_OUT,
-    SET_AUTH_USER,
-    SET_AUTHENTICATED,
-    SET_SCREEN_SIZE,
-    SET_SCREEN,
-    SET_IS_404,
-} from './constants';
+import { LOG_IN_WITH_EMAIL_PASSWORD, LOG_OUT_COMPLETE, LOG_OUT, SET_AUTH_USER, SET_AUTHENTICATED, SET_IS_404, SIGN_UP } from './constants';
 import { getCookie } from 'utils/cookie';
 
 /**
@@ -37,7 +27,7 @@ export function setAuthenticated() {
 export function login(data) {
     return {
         type: LOG_IN_WITH_EMAIL_PASSWORD,
-        data,
+        payload: { ...data },
     };
 }
 
@@ -53,15 +43,16 @@ export function logoutComplete() {
     };
 }
 
-export function loginComplete() {
-    return {
-        type: LOG_IN_COMPLETE,
-    };
-}
-
 export function set404(payload) {
     return {
         type: SET_IS_404,
         payload,
+    };
+}
+
+export function signUp(data) {
+    return {
+        type: SIGN_UP,
+        payload: { ...data },
     };
 }

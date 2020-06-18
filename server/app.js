@@ -1,13 +1,22 @@
 const express = require('express');
 const connectDB = require('./config/db');
-
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const cors = require('cors');
+const users = require('./routes/api/users');
 const app = express();
-
-// Connect Database
+// Bodyparser middleware
+app.use(
+    bodyParser.urlencoded({
+        extended: false,
+    })
+);
+app.use(bodyParser.json());
+app.use(cors());
 connectDB();
-
-app.get('/', (req, res) => res.send('Hello world!'));
-
+app.use(passport.initialize());
+require('./config/passport')(passport);
+// Routes
+app.use('/api/users', users);
 const port = process.env.PORT || 8082;
-
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => console.log(`Server up and running on port ${port} !`));

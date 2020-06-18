@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
-import { Grid, Button, TextField, Typography } from '@material-ui/core';
+import { Grid, Button, TextField, Typography, Snackbar } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { makeSelectIsAuthenticated } from 'containers/App/redux/selectors';
+import { login } from 'containers/App/redux/actions';
 import { useStyles } from './styles';
 
 const schema = {
@@ -24,8 +27,11 @@ const schema = {
 
 const SignIn = () => {
     const history = useHistory();
-
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector(makeSelectIsAuthenticated);
     const classes = useStyles();
+    const [alertMsg, setAlertMsg] = useState('');
+    const [error, setError] = useState(false);
 
     const [formState, setFormState] = useState({
         isValid: false,
@@ -33,6 +39,12 @@ const SignIn = () => {
         touched: {},
         errors: {},
     });
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            history.push('/dashboard');
+        }
+    }, []);
 
     useEffect(() => {
         const errors = validate(formState.values, schema);
@@ -60,8 +72,16 @@ const SignIn = () => {
     };
 
     const handleSignIn = (event) => {
-        event.preventDefault();
-        history.push('/');
+        if (!hasError('email') && !hasError('password')) {
+            dispatch(
+                login({
+                    data: { email: formState.values.email, password: formState.values.password },
+                    onFail: (err) => {
+                        setAlertMsg(err.message);
+                    },
+                })
+            );
+        }
     };
 
     const hasError = (field) => (formState.touched[field] && formState.errors[field] ? true : false);
@@ -89,7 +109,8 @@ const SignIn = () => {
                 <Grid className={classes.content} item lg={7} xs={12}>
                     <div className={classes.content}>
                         <div className={classes.contentBody}>
-                            <form className={classes.form} onSubmit={handleSignIn}>
+                            <Snackbar open={alertMsg !== ''} error={error} message={alertMsg} />
+                            <div className={classes.form}>
                                 <Typography className={classes.title} variant="h2">
                                     Sign in
                                 </Typography>
@@ -124,7 +145,8 @@ const SignIn = () => {
                                     fullWidth
                                     size="large"
                                     type="submit"
-                                    variant="contained">
+                                    variant="contained"
+                                    onClick={handleSignIn}>
                                     Sign in now
                                 </Button>
                                 <Typography color="textSecondary" variant="body1">
@@ -133,7 +155,7 @@ const SignIn = () => {
                                         Sign up
                                     </Link>
                                 </Typography>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </Grid>

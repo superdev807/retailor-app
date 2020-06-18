@@ -5,6 +5,8 @@ import validate from 'validate.js';
 import { Grid, Button, IconButton, TextField, NativeSelect, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signUp } from 'containers/App/redux/actions';
 import { useStyles } from './styles';
 
 const schema = {

@@ -5,4 +5,5 @@ export const LOG_OUT = 'App/LOG_OUT';
 export const LOG_OUT_COMPLETE = 'App/LOG_OUT_COMPLETE';
 export const LOG_IN_COMPLETE = 'App/LOG_IN_COMPLETE';
 export const LOG_IN_FAIL = 'App/LOG_IN_FAIL';
-export const SET_IS_404 = 'loyaltyweb/App/SET_IS_404';
+export const SET_IS_404 = 'App/SET_IS_404';
+export const SIGN_UP = 'App/SIGN_UP';

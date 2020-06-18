@@ -1,6 +1,7 @@
 import produce from 'immer';
 import { API_PENDING, API_SUCCESS, API_FAIL, requestPending, requestSuccess, requestFail } from 'redux/api/request';
-import { LOG_IN_COMPLETE, LOG_IN_FAIL, SET_AUTHENTICATED } from './constants';
+import { setCookie, deleteCookie } from 'utils/cookie';
+import { SET_AUTHENTICATED, LOG_IN_WITH_EMAIL_PASSWORD } from './constants';
 
 export const initialState = {
     isAuthenticated: false,
@@ -11,17 +12,17 @@ export const initialState = {
 const appReducer = (state = initialState, action) =>
     produce(state, (draft) => {
         switch (action.type) {
-            case LOG_IN_COMPLETE:
-                draft.loginStatus = API_SUCCESS;
+            case SET_AUTHENTICATED:
+                draft.isAuthenticated = action.isAuthenticated;
+                break;
+            case requestSuccess(LOG_IN_WITH_EMAIL_PASSWORD):
+                console.log('>>>', action.payload.token);
+                setCookie('appToken', action.payload.token);
                 draft.isAuthenticated = true;
                 break;
-            case LOG_IN_FAIL:
-                draft.loginStatus = API_FAIL;
+            case requestFail(LOG_IN_WITH_EMAIL_PASSWORD):
+                deleteCookie('appToken', '/');
                 draft.isAuthenticated = false;
-                break;
-            case SET_AUTHENTICATED:
-                console.log('>>>');
-                draft.isAuthenticated = action.isAuthenticated;
                 break;
         }
     });
