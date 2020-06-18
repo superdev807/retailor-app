@@ -7,12 +7,18 @@ const login = apiCall({
     type: LOG_IN_WITH_EMAIL_PASSWORD,
     method: 'post',
     path: () => 'api/users/login',
+    payloadOnSuccess: (data) => {
+        return { data: data.data };
+    },
 });
 
 const signUp = apiCall({
     type: SIGN_UP,
     method: 'post',
     path: () => 'api/users/register',
+    payloadOnSuccess: (data) => {
+        return { data: data.data };
+    },
 });
 
 export default function* rootSaga() {

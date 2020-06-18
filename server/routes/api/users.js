@@ -11,11 +11,11 @@ const User = require('../../models/User');
 router.post('/register', (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) {
-        return res.status(400).json(errors);
+        return res.status(400).json({ message: errors });
     }
     User.findOne({ email: req.body.email }).then((user) => {
         if (user) {
-            return res.status(400).json({ email: 'Email already exists' });
+            return res.status(400).json({ message: 'Email already exists' });
         } else {
             const newUser = new User({
                 firstName: req.body.firstName,
@@ -48,7 +48,7 @@ router.post('/login', (req, res) => {
     const password = req.body.password;
     User.findOne({ email }).then((user) => {
         if (!user) {
-            return res.status(404).json({ email_not_found: 'Email not found' });
+            return res.status(404).json({ message: 'Email not found' });
         }
         bcrypt.compare(password, user.password).then((isMatch) => {
             if (isMatch) {
@@ -70,7 +70,7 @@ router.post('/login', (req, res) => {
                     }
                 );
             } else {
-                return res.status(400).json({ password_incorrect: 'Password incorrect' });
+                return res.status(400).json({ message: 'Password incorrect' });
             }
         });
     });

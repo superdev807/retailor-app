@@ -50,7 +50,7 @@ export default ({
             resolve,
             reject,
         } = payload;
-        console.log('---', process.env, data, sagaParams, params);
+
         const accessToken = getCookie('appToken');
         const token = appToken || accessToken;
         try {
@@ -104,8 +104,6 @@ export default ({
             let errRes = err;
             if (err.response) {
                 errRes = new Error(get(err, 'response.data.message', 'Error'));
-                errRes.fieldErrors = get(err, 'response.data.fieldErrors');
-                errRes.errorCode = get(err, 'response.data.errorCode');
             } else {
                 yield put({
                     type: SET_IS_404,

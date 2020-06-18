@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Grid, Button, TextField, Typography } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { makeSelectIsAuthenticated, makeSelectAuthError } from 'containers/App/redux/selectors';
+import { login, setAuthError } from 'containers/App/redux/actions';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
-import { Grid, Button, TextField, Typography, Snackbar } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { makeSelectIsAuthenticated } from 'containers/App/redux/selectors';
-import { login } from 'containers/App/redux/actions';
+import Notification from 'components/Notification';
 import { useStyles } from './styles';
 
 const schema = {
@@ -29,9 +30,8 @@ const SignIn = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(makeSelectIsAuthenticated);
+    const authError = useSelector(makeSelectAuthError);
     const classes = useStyles();
-    const [alertMsg, setAlertMsg] = useState('');
-    const [error, setError] = useState(false);
 
     const [formState, setFormState] = useState({
         isValid: false,
@@ -76,12 +76,16 @@ const SignIn = () => {
             dispatch(
                 login({
                     data: { email: formState.values.email, password: formState.values.password },
-                    onFail: (err) => {
-                        setAlertMsg(err.message);
-                    },
                 })
             );
         }
+    };
+
+    const snackErrorClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        dispatch(setAuthError(''));
     };
 
     const hasError = (field) => (formState.touched[field] && formState.errors[field] ? true : false);
@@ -109,7 +113,7 @@ const SignIn = () => {
                 <Grid className={classes.content} item lg={7} xs={12}>
                     <div className={classes.content}>
                         <div className={classes.contentBody}>
-                            <Snackbar open={alertMsg !== ''} error={error} message={alertMsg} />
+                            <Notification error={authError} snackBarClose={snackErrorClose} msgType={'error'} />
                             <div className={classes.form}>
                                 <Typography className={classes.title} variant="h2">
                                     Sign in

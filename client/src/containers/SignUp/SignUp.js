@@ -38,6 +38,7 @@ const schema = {
 };
 
 const SignUp = () => {
+    const dispatch = useDispatch();
     const history = useHistory();
     const classes = useStyles();
 
@@ -47,6 +48,7 @@ const SignUp = () => {
         touched: {},
         errors: {},
     });
+    const [alertMsg, setAlertMsg] = useState('');
 
     useEffect(() => {
         const errors = validate(formState.values, schema);
@@ -79,8 +81,21 @@ const SignUp = () => {
     };
 
     const handleSignUp = (event) => {
-        event.preventDefault();
-        history.push('/');
+        if (!hasError('firstName') && !hasError('lastName') && !hasError('email') && !hasError('password')) {
+            dispatch(
+                signUp({
+                    data: {
+                        firstName: formState.values.firstName,
+                        lastName: formState.values.lastName,
+                        email: formState.values.email,
+                        password: formState.values.password,
+                    },
+                    onFail: (err) => {
+                        setAlertMsg(err.message);
+                    },
+                })
+            );
+        }
     };
 
     const hasError = (field) => (formState.touched[field] && formState.errors[field] ? true : false);
@@ -113,7 +128,7 @@ const SignUp = () => {
                             </IconButton>
                         </div>
                         <div className={classes.contentBody}>
-                            <form className={classes.form} onSubmit={handleSignUp}>
+                            <div className={classes.form}>
                                 <Typography className={classes.title} variant="h2">
                                     Create new account
                                 </Typography>
@@ -180,7 +195,8 @@ const SignUp = () => {
                                     fullWidth
                                     size="large"
                                     type="submit"
-                                    variant="contained">
+                                    variant="contained"
+                                    onClick={handleSignUp}>
                                     Sign up now
                                 </Button>
                                 <Typography color="textSecondary" variant="body1">
@@ -189,7 +205,7 @@ const SignUp = () => {
                                         Sign in
                                     </Link>
                                 </Typography>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </Grid>

@@ -7,3 +7,4 @@ export const LOG_IN_COMPLETE = 'App/LOG_IN_COMPLETE';
 export const LOG_IN_FAIL = 'App/LOG_IN_FAIL';
 export const SET_IS_404 = 'App/SET_IS_404';
 export const SIGN_UP = 'App/SIGN_UP';
+export const SET_AUTH_ERROR = 'App/SET_AUTH_ERROR';

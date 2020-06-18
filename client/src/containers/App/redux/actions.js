@@ -1,4 +1,13 @@
-import { LOG_IN_WITH_EMAIL_PASSWORD, LOG_OUT_COMPLETE, LOG_OUT, SET_AUTH_USER, SET_AUTHENTICATED, SET_IS_404, SIGN_UP } from './constants';
+import {
+    LOG_IN_WITH_EMAIL_PASSWORD,
+    LOG_OUT_COMPLETE,
+    LOG_OUT,
+    SET_AUTH_USER,
+    SET_AUTHENTICATED,
+    SET_IS_404,
+    SIGN_UP,
+    SET_AUTH_ERROR,
+} from './constants';
 import { getCookie } from 'utils/cookie';
 
 /**
@@ -54,5 +63,12 @@ export function signUp(data) {
     return {
         type: SIGN_UP,
         payload: { ...data },
+    };
+}
+
+export function setAuthError(data) {
+    return {
+        type: SET_AUTH_ERROR,
+        payload: data,
     };
 }
