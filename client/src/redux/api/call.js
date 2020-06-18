@@ -1,5 +1,3 @@
-'use strict';
-
 import axios from 'axios';
 import { call, put } from 'redux-saga/effects';
 import get from 'lodash/get';

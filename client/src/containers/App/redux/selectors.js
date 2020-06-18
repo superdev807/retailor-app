@@ -11,3 +11,5 @@ export const makeSelectIsAuthenticated = createSelector(selectGlobal, (globalSta
 export const makeSelectAuthNotification = createSelector(selectGlobal, (globalState) => globalState.authNotification);
 
 export const makeSelectAuthError = createSelector(selectGlobal, (globalState) => globalState.authError);
+
+export const makeSelectAuthUser = createSelector(selectGlobal, (globalState) => globalState.authUser);

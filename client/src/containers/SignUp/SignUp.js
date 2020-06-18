@@ -131,7 +131,7 @@ const SignUp = () => {
                     <div className={classes.quote}>
                         <div className={classes.quoteInner}>
                             <Typography className={classes.quoteText} variant="h1">
-                                <b>Retailor Application</b>
+                                <b>Manage Apartment Rentals</b>
                             </Typography>
                             <div className={classes.person}>
                                 <Typography className={classes.name} variant="body1">

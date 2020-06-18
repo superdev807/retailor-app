@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,22 +23,13 @@ const Topbar = (props) => {
 
     const classes = useStyles();
 
-    const [notifications] = useState([]);
-
     return (
         <AppBar {...rest} className={clsx(classes.root, className)}>
             <Toolbar>
-                <RouterLink to="/">
-                    <img alt="Logo" src="/images/logos/logo--white.svg" />
-                </RouterLink>
-                <h1>Toptal</h1>
+                <img alt="Logo" src="/images/logos/logo--white.svg" />
+                <h1>Toptal Test</h1>
                 <div className={classes.flexGrow} />
                 <Hidden mdDown>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={notifications.length} color="primary" variant="dot">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
                     <IconButton className={classes.signOutButton} color="inherit">
                         <InputIcon />
                     </IconButton>

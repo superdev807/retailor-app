@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { API_PENDING, API_SUCCESS, API_FAIL, requestPending, requestSuccess, requestFail } from 'redux/api/request';
+import { API_SUCCESS, API_FAIL, requestSuccess, requestFail } from 'redux/api/request';
 import { setCookie, deleteCookie } from 'utils/cookie';
 import { SET_AUTHENTICATED, LOG_IN_WITH_EMAIL_PASSWORD, SET_AUTH_ERROR, SIGN_UP, SET_AUTH_NOTIFICATION } from './constants';
 
@@ -20,12 +20,16 @@ const appReducer = (state = initialState, action) =>
             case requestSuccess(LOG_IN_WITH_EMAIL_PASSWORD):
                 draft.authNotification = 'Welcome!';
                 setCookie('appToken', action.payload.token);
+                setCookie('userName', action.payload.user.firstName + ' ' + action.payload.user.lastName);
+                setCookie('role', action.payload.user.role);
                 draft.isAuthenticated = true;
                 draft.loginStatus = API_SUCCESS;
                 break;
             case requestFail(LOG_IN_WITH_EMAIL_PASSWORD):
                 draft.authError = action.payload.message;
                 deleteCookie('appToken', '/');
+                deleteCookie('userName', '/');
+                deleteCookie('role', '/');
                 draft.isAuthenticated = false;
                 draft.loginStatus = API_FAIL;
                 break;

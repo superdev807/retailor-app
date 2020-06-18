@@ -22,6 +22,7 @@ const Topbar = (props) => {
                 <RouterLink to="/">
                     <img alt="Logo" src="/images/logos/logo--white.svg" />
                 </RouterLink>
+                <h1>Toptal Test</h1>
             </Toolbar>
         </AppBar>
     );

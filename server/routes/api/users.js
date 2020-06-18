@@ -41,6 +41,7 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body);
+    console.log('>>>', req.body);
     if (!isValid) {
         return res.status(400).json(errors);
     }
@@ -66,6 +67,12 @@ router.post('/login', (req, res) => {
                         res.json({
                             success: true,
                             token: token,
+                            user: {
+                                email: user.email,
+                                firstName: user.firstName,
+                                lastName: user.lastName,
+                                role: user.role,
+                            },
                         });
                     }
                 );

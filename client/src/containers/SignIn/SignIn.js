@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { makeSelectIsAuthenticated, makeSelectAuthError } from 'containers/App/redux/selectors';
 import { login, setAuthError } from 'containers/App/redux/actions';
-import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import Notification from 'components/Notification';
 import { useStyles } from './styles';
@@ -27,8 +26,8 @@ const schema = {
 };
 
 const SignIn = () => {
-    const history = useHistory();
     const dispatch = useDispatch();
+    const history = useHistory();
     const isAuthenticated = useSelector(makeSelectIsAuthenticated);
     const authError = useSelector(makeSelectAuthError);
     const classes = useStyles();
@@ -44,7 +43,7 @@ const SignIn = () => {
         if (isAuthenticated) {
             history.push('/dashboard');
         }
-    }, []);
+    }, [isAuthenticated]);
 
     useEffect(() => {
         const errors = validate(formState.values, schema);
@@ -72,6 +71,7 @@ const SignIn = () => {
     };
 
     const handleSignIn = (event) => {
+        event.preventDefault();
         if (!hasError('email') && !hasError('password')) {
             dispatch(
                 login({
@@ -97,7 +97,7 @@ const SignIn = () => {
                     <div className={classes.quote}>
                         <div className={classes.quoteInner}>
                             <Typography className={classes.quoteText} variant="h1">
-                                <b>Retailor Application</b>
+                                <b>Manage Apartment Rentals</b>
                             </Typography>
                             <div className={classes.person}>
                                 <Typography className={classes.name} variant="body1">
@@ -114,7 +114,7 @@ const SignIn = () => {
                     <div className={classes.content}>
                         <div className={classes.contentBody}>
                             <Notification error={authError} snackBarClose={snackErrorClose} msgType={'error'} />
-                            <div className={classes.form}>
+                            <form className={classes.form} noValidate onSubmit={handleSignIn}>
                                 <Typography className={classes.title} variant="h2">
                                     Sign in
                                 </Typography>
@@ -149,8 +149,7 @@ const SignIn = () => {
                                     fullWidth
                                     size="large"
                                     type="submit"
-                                    variant="contained"
-                                    onClick={handleSignIn}>
+                                    variant="contained">
                                     Sign in now
                                 </Button>
                                 <Typography color="textSecondary" variant="body1">
@@ -159,17 +158,13 @@ const SignIn = () => {
                                         Sign up
                                     </Link>
                                 </Typography>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </Grid>
             </Grid>
         </div>
     );
-};
-
-SignIn.propTypes = {
-    history: PropTypes.object,
 };
 
 export default SignIn;
