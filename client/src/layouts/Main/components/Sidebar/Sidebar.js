@@ -38,8 +38,8 @@ const Sidebar = (props) => {
 
     const pages = [
         {
-            title: 'Dashboard',
-            href: '/dashboard',
+            title: 'Apartments',
+            href: '/apartment',
             icon: <DashboardIcon />,
         },
         {

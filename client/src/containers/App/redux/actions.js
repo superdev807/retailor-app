@@ -1,6 +1,5 @@
 import {
     LOG_IN_WITH_EMAIL_PASSWORD,
-    LOG_OUT_COMPLETE,
     LOG_OUT,
     SET_AUTH_USER,
     SET_AUTHENTICATED,
@@ -44,12 +43,6 @@ export function login(data) {
 export function logout() {
     return {
         type: LOG_OUT,
-    };
-}
-
-export function logoutComplete() {
-    return {
-        type: LOG_OUT_COMPLETE,
     };
 }
 

@@ -57,7 +57,7 @@ const SignUp = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            history.push('/dashboard');
+            history.push('/apartment');
         }
     }, []);
 
@@ -211,7 +211,7 @@ const SignUp = () => {
                                 />
                                 <NativeSelect className={classes.userSelectbox} onChange={handleChange} name="role">
                                     <option>Client</option>
-                                    <option>Retailor</option>
+                                    <option>Realtor</option>
                                     <option>Administrator</option>
                                 </NativeSelect>
                                 <Button

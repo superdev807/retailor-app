@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 import SignIn from 'containers/SignIn';
 import SignUp from 'containers/SignUp';
-import Dashboard from 'containers/Dashboard';
+import Apartments from 'containers/Apartments';
 import RouteWithLayout from 'components/RouteWithLayout';
 import AuthenticatedRoute from 'components/AuthenticatedRoute';
 import NotFound from 'containers/NotFound';
@@ -18,7 +18,7 @@ export default function App() {
             <RouteWithLayout exact path="/" component={SignIn} layout={MinimalLayout} />
             <RouteWithLayout exact path="/sign-in" component={SignIn} layout={MinimalLayout} />
             <RouteWithLayout exact path="/sign-up" component={SignUp} layout={MinimalLayout} />
-            <AuthenticatedRoute exact path="/dashboard" component={Dashboard} layout={MainLayout} />
+            <AuthenticatedRoute exact path="/apartment" component={Apartments} layout={MainLayout} />
             <RouteWithLayout exact path="/not-found" component={NotFound} layout={MinimalLayout} />
             <Redirect to="/not-found" />
         </Switch>

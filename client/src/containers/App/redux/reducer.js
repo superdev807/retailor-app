@@ -1,7 +1,7 @@
 import produce from 'immer';
-import { API_SUCCESS, API_FAIL, requestSuccess, requestFail } from 'redux/api/request';
+import { API_SUCCESS, API_FAIL, API_PENDING, requestSuccess, requestFail, requestPending } from 'redux/api/request';
 import { setCookie, deleteCookie } from 'utils/cookie';
-import { SET_AUTHENTICATED, LOG_IN_WITH_EMAIL_PASSWORD, SET_AUTH_ERROR, SIGN_UP, SET_AUTH_NOTIFICATION } from './constants';
+import { SET_AUTHENTICATED, LOG_IN_WITH_EMAIL_PASSWORD, SET_AUTH_ERROR, SIGN_UP, SET_AUTH_NOTIFICATION, LOG_OUT } from './constants';
 
 export const initialState = {
     isAuthenticated: false,
@@ -33,11 +33,20 @@ const appReducer = (state = initialState, action) =>
                 draft.isAuthenticated = false;
                 draft.loginStatus = API_FAIL;
                 break;
+            case requestPending(LOG_IN_WITH_EMAIL_PASSWORD):
+                draft.loginStatus = API_PENDING;
+                break;
             case requestSuccess(SIGN_UP):
                 draft.authNotification = 'Successfully registered';
                 break;
             case requestFail(SIGN_UP):
                 draft.authError = action.payload.message;
+                break;
+            case LOG_OUT:
+                deleteCookie('appToken', '/');
+                deleteCookie('userName', '/');
+                deleteCookie('role', '/');
+                draft.isAuthenticated = false;
                 break;
             case SET_AUTH_ERROR:
                 draft.authError = action.payload;

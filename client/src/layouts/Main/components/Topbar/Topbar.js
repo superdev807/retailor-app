@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Topbar = (props) => {
-    const { className, onSidebarOpen, ...rest } = props;
+    const { className, onSidebarOpen, logout, ...rest } = props;
 
     const classes = useStyles();
 
@@ -30,11 +30,14 @@ const Topbar = (props) => {
                 <h1>Toptal Test</h1>
                 <div className={classes.flexGrow} />
                 <Hidden mdDown>
-                    <IconButton className={classes.signOutButton} color="inherit">
+                    <IconButton className={classes.signOutButton} color="inherit" onClick={logout}>
                         <InputIcon />
                     </IconButton>
                 </Hidden>
                 <Hidden lgUp>
+                    <IconButton className={classes.signOutButton} color="inherit" onClick={logout}>
+                        <InputIcon />
+                    </IconButton>
                     <IconButton color="inherit" onClick={onSidebarOpen}>
                         <MenuIcon />
                     </IconButton>
@@ -47,6 +50,7 @@ const Topbar = (props) => {
 Topbar.propTypes = {
     className: PropTypes.string,
     onSidebarOpen: PropTypes.func,
+    logout: PropTypes.func,
 };
 
 export default Topbar;

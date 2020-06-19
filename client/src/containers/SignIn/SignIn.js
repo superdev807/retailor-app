@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Button, TextField, Typography } from '@material-ui/core';
+import { Grid, Button, TextField, Typography, CircularProgress } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { makeSelectIsAuthenticated, makeSelectAuthError } from 'containers/App/redux/selectors';
+import { makeSelectIsAuthenticated, makeSelectAuthError, makeSelectLogging } from 'containers/App/redux/selectors';
 import { login, setAuthError } from 'containers/App/redux/actions';
 import validate from 'validate.js';
 import Notification from 'components/Notification';
@@ -29,6 +29,7 @@ const SignIn = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const isAuthenticated = useSelector(makeSelectIsAuthenticated);
+    const isLogging = useSelector(makeSelectLogging);
     const authError = useSelector(makeSelectAuthError);
     const classes = useStyles();
 
@@ -41,7 +42,7 @@ const SignIn = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            history.push('/dashboard');
+            history.push('/apartment');
         }
     }, [isAuthenticated]);
 
@@ -145,12 +146,12 @@ const SignIn = () => {
                                 <Button
                                     className={classes.signInButton}
                                     color="primary"
-                                    disabled={!formState.isValid}
+                                    disabled={!formState.isValid || isLogging}
                                     fullWidth
                                     size="large"
                                     type="submit"
                                     variant="contained">
-                                    Sign in now
+                                    Sign in now {isLogging && <CircularProgress size={20} />}
                                 </Button>
                                 <Typography color="textSecondary" variant="body1">
                                     Don't have an account?
