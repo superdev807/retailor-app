@@ -18,8 +18,6 @@ import {
     TablePagination,
 } from '@material-ui/core';
 
-import ApartmentsDialog from '../ApartmentDialog';
-
 const useStyles = makeStyles((theme) => ({
     root: {},
     content: {
@@ -60,7 +58,6 @@ const ApartmentsTable = (props) => {
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
             <CardContent className={classes.content}>
-                <ApartmentsDialog open={true} title={'Add Apartment'} />
                 <PerfectScrollbar>
                     <div className={classes.inner}>
                         <Table>

@@ -1,17 +1,36 @@
 import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme) => ({
+    dialogPaper: {
+        minWidth: 396,
+    },
     form: {
         display: 'flex',
         flexDirection: 'column',
         margin: 'auto',
-        width: 'fit-content',
+        width: '100%',
     },
     formControl: {
-        marginTop: theme.spacing(2),
         minWidth: 120,
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     formControlLabel: {
         marginTop: theme.spacing(1),
+    },
+    normalText: {
+        width: '100%',
+    },
+    subArea1: {
+        width: '32%',
+        minHeight: 50,
+    },
+    subArea2: {
+        width: '48%',
+    },
+    description: {
+        minHeight: 100,
     },
 }));
