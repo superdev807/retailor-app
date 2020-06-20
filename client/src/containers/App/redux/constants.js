@@ -9,3 +9,4 @@ export const SET_IS_404 = 'App/SET_IS_404';
 export const SIGN_UP = 'App/SIGN_UP';
 export const SET_AUTH_ERROR = 'App/SET_AUTH_ERROR';
 export const SET_AUTH_NOTIFICATION = 'App/SET_AUTH_NOTIFICATION';
+export const GET_USER_INFO = 'App/GET_USER_INFO';

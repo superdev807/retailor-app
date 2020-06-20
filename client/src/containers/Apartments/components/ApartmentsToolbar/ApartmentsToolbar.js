@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ApartmentsToolbar = (props) => {
-    const { className, ...rest } = props;
+    const { className, role, email, ...rest } = props;
 
     const classes = useStyles();
 
@@ -29,7 +29,7 @@ const ApartmentsToolbar = (props) => {
         <div {...rest} className={clsx(classes.root, className)}>
             <div className={classes.row}>
                 <span className={classes.spacer} />
-                <ApartmentsDialog open={true} title={'Add Apartment'} />
+                <ApartmentsDialog title={'Add Apartment'} role={role} email={email} />
             </div>
             <div className={classes.row}></div>
         </div>

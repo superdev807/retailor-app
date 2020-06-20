@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
-
+import { makeSelectAuthUser } from 'containers/App/redux/selectors';
+import { useSelector } from 'react-redux';
 import { Profile, SidebarNav } from './components';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Sidebar = (props) => {
     const { open, variant, onClose, className, ...rest } = props;
-
+    const authUser = useSelector(makeSelectAuthUser);
     const classes = useStyles();
 
     const pages = [
@@ -52,9 +53,9 @@ const Sidebar = (props) => {
     return (
         <Drawer anchor="left" classes={{ paper: classes.drawer }} onClose={onClose} open={open} variant={variant}>
             <div {...rest} className={clsx(classes.root, className)}>
-                <Profile />
+                <Profile authUser={authUser} />
                 <Divider className={classes.divider} />
-                <SidebarNav className={classes.nav} pages={pages} />
+                <SidebarNav userRole={authUser.role} className={classes.nav} pages={pages} />
             </div>
         </Drawer>
     );

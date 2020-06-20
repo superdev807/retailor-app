@@ -7,17 +7,9 @@ import {
     SIGN_UP,
     SET_AUTH_ERROR,
     SET_AUTH_NOTIFICATION,
+    GET_USER_INFO,
 } from './constants';
 import { getCookie } from 'utils/cookie';
-
-/**
- * Determines if the screen is for desktop or phone
- *
- * @param  {boolean} isDesktop isDesktop boolean value
- * @param  {boolean} isPhone isPhone boolean value
- *
- * @return {object} An action object with a type of SET_SCREEN, isDesktop, and isPhone
- */
 
 export function setAuthUser(authUser) {
     return {
@@ -33,10 +25,10 @@ export function setAuthenticated() {
     };
 }
 
-export function login(data) {
+export function login(payload) {
     return {
         type: LOG_IN_WITH_EMAIL_PASSWORD,
-        payload: { ...data },
+        payload,
     };
 }
 
@@ -53,17 +45,17 @@ export function set404(payload) {
     };
 }
 
-export function signUp(data) {
+export function signUp(payload) {
     return {
         type: SIGN_UP,
-        payload: { ...data },
+        payload,
     };
 }
 
-export function setAuthError(data) {
+export function setAuthError(payload) {
     return {
         type: SET_AUTH_ERROR,
-        payload: data,
+        payload,
     };
 }
 
@@ -71,5 +63,12 @@ export function setAuthNotification(data) {
     return {
         type: SET_AUTH_NOTIFICATION,
         payload: data,
+    };
+}
+
+export function getUserDetails(payload) {
+    return {
+        type: GET_USER_INFO,
+        payload,
     };
 }

@@ -13,4 +13,8 @@ export const makeSelectAuthError = createSelector(selectGlobal, (globalState) =>
 
 export const makeSelectAuthUser = createSelector(selectGlobal, (globalState) => globalState.authUser);
 
-export const makeSelectLogging = createSelector(selectGlobal, (globalState) => globalState.loginStatus === API_PENDING);
+export const makeSelectLogging = createSelector(selectGlobal, (globalState) => globalState.loginState === API_PENDING);
+
+export const makeSignUpLoading = createSelector(selectGlobal, (globalState) => globalState.signUpState === API_PENDING);
+
+export const makeSelectUserRole = createSelector(selectGlobal, (globalState) => globalState.authUser.role);

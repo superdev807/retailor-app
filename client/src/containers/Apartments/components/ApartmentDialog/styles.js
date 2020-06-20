@@ -16,6 +16,7 @@ export const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
     },
     formControlLabel: {
         marginTop: theme.spacing(1),
@@ -32,5 +33,12 @@ export const useStyles = makeStyles((theme) => ({
     },
     description: {
         minHeight: 100,
+    },
+    associated: {
+        width: '70%',
+        border: '1px solid black',
+    },
+    associatedInput: {
+        paddingLeft: 20,
     },
 }));

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
-import { Grid, Button, IconButton, TextField, NativeSelect, Typography } from '@material-ui/core';
+import { Grid, Button, IconButton, TextField, NativeSelect, Typography, CircularProgress } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import { signUp, setAuthError, setAuthNotification } from 'containers/App/redux/
 import { makeSelectIsAuthenticated, makeSelectAuthError } from 'containers/App/redux/selectors';
 import Notification from 'components/Notification';
 import { useStyles } from './styles';
-import { makeSelectAuthNotification } from '../App/redux/selectors';
+import { makeSelectAuthNotification, makeSignUpLoading } from '../App/redux/selectors';
 
 const schema = {
     firstName: {
@@ -46,6 +46,7 @@ const SignUp = () => {
     const isAuthenticated = useSelector(makeSelectIsAuthenticated);
     const authError = useSelector(makeSelectAuthError);
     const authNotification = useSelector(makeSelectAuthNotification);
+    const isSignUpLoading = useSelector(makeSignUpLoading);
     const classes = useStyles();
 
     const [formState, setFormState] = useState({
@@ -217,13 +218,13 @@ const SignUp = () => {
                                 <Button
                                     className={classes.signUpButton}
                                     color="primary"
-                                    disabled={!formState.isValid}
+                                    disabled={!formState.isValid || isSignUpLoading}
                                     fullWidth
                                     size="large"
                                     type="submit"
                                     variant="contained"
                                     onClick={handleSignUp}>
-                                    Sign up now
+                                    Sign up now {isSignUpLoading && <CircularProgress size={20} />}
                                 </Button>
                                 <Typography color="textSecondary" variant="body1">
                                     Have an account?{' '}
