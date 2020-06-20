@@ -8,7 +8,7 @@ export default function NumberFormatCustom(props) {
         suffix = '';
 
     switch (name) {
-        case 'floorArea':
+        case 'floorAreaSize':
             suffix = ' m²';
             break;
         case 'pricePerMonth':

@@ -1,9 +1,9 @@
 import { CREATE_APARTMENT, READ_APARTMENTS, UPDATE_APARTMENT, DELETE_APARTMENT } from './constant';
 
-export function createApartment(apartment) {
+export function createApartment(payload) {
     return {
         type: CREATE_APARTMENT,
-        apartment,
+        payload,
     };
 }
 
@@ -20,9 +20,9 @@ export function updateApartment(payload) {
     };
 }
 
-export function deleteApartment(apartment_id) {
+export function deleteApartment(payload) {
     return {
         type: DELETE_APARTMENT,
-        apartment_id,
+        payload,
     };
 }

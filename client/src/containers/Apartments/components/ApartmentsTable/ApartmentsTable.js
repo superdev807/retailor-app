@@ -39,11 +39,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ApartmentsTable = (props) => {
-    const { className, users, ...rest } = props;
+    const { className, apartments, updateApartmentFunc, deleteApartmentFunc, ...rest } = props;
 
     const classes = useStyles();
-
-    const [selectedUsers, setSelectedUsers] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [page, setPage] = useState(0);
 
@@ -73,12 +71,8 @@ const ApartmentsTable = (props) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {users.slice(0, rowsPerPage).map((user) => (
-                                    <TableRow
-                                        className={classes.tableRow}
-                                        hover
-                                        key={user.id}
-                                        selected={selectedUsers.indexOf(user.id) !== -1}>
+                                {apartments.slice(0, rowsPerPage).map((user) => (
+                                    <TableRow className={classes.tableRow} hover key={user.id}>
                                         <TableCell>
                                             <div className={classes.nameContainer}>
                                                 <Avatar className={classes.avatar} src={user.avatarUrl}>
@@ -103,7 +97,7 @@ const ApartmentsTable = (props) => {
             <CardActions className={classes.actions}>
                 <TablePagination
                     component="div"
-                    count={users.length}
+                    count={apartments.length}
                     onChangePage={handlePageChange}
                     onChangeRowsPerPage={handleRowsPerPageChange}
                     page={page}
@@ -117,7 +111,7 @@ const ApartmentsTable = (props) => {
 
 ApartmentsTable.propTypes = {
     className: PropTypes.string,
-    users: PropTypes.array.isRequired,
+    apartments: PropTypes.array.isRequired,
 };
 
 export default ApartmentsTable;

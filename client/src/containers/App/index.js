@@ -24,7 +24,6 @@ export default function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log('>>>', authUser);
         if (appToken && isEmpty(authUser)) {
             dispatch(
                 getUserDetails({

@@ -2,49 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Geocode from 'react-geocode';
 import { DialogTitle, DialogContent, DialogActions } from 'components/DialogSubComponents';
 import NumberFormatCustom from 'components/NumberFormatCustom';
-import { Button, Dialog, TextField, RadioGroup, FormControlLabel, Radio, NativeSelect } from '@material-ui/core';
+import { Button, Dialog, TextField, RadioGroup, FormControlLabel, Radio, NativeSelect, CircularProgress } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import clsx from 'clsx';
 import validate from 'validate.js';
+import { schema, addressSchema, geoCodeSchema } from './schema';
 import { useStyles } from './styles';
-
-const schema = {
-    name: {
-        presence: { allowEmpty: false, message: 'is required' },
-    },
-    description: {
-        presence: { allowEmpty: false, message: 'is required' },
-    },
-    floorArea: {
-        presence: { allowEmpty: false, message: 'is required' },
-    },
-    pricePerMonth: {
-        presence: { allowEmpty: false, message: 'is required' },
-    },
-    numberOfRooms: {
-        presence: { allowEmpty: false, message: 'is required' },
-    },
-};
-
-const addressSchema = {
-    address: {
-        presence: { allowEmpty: false, message: 'is required' },
-    },
-};
-
-const geoCodeSchema = {
-    latitude: {
-        presence: { allowEmpty: false, message: 'is required' },
-    },
-    longitude: {
-        presence: { allowEmpty: false, message: 'is required' },
-    },
-};
 
 const ApartmentDialog = (props) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const { title, role, email } = props;
+    const { title, role, email, fetching, handleSaveAction } = props;
     const [geoCodeError, setGeoCodeError] = useState('');
 
     const [formState, setFormState] = useState({
@@ -53,6 +21,11 @@ const ApartmentDialog = (props) => {
         touched: {},
         errors: {},
     });
+
+    useEffect(() => {
+        Geocode.setApiKey('AIzaSyDUEBAo6yr2PPV0dY2GjXWQSFp_oALKyoc');
+        Geocode.setLanguage('en');
+    }, []);
 
     useEffect(() => {
         if (open) {
@@ -65,13 +38,6 @@ const ApartmentDialog = (props) => {
             setGeoCodeError('');
         }
     }, [open]);
-
-    useEffect(() => {
-        Geocode.setApiKey('AIzaSyDUEBAo6yr2PPV0dY2GjXWQSFp_oALKyoc');
-        Geocode.setLanguage('en');
-    }, []);
-
-    useEffect(() => {}, [open]);
 
     useEffect(() => {
         const errors = validate(formState.values, schema);
@@ -103,7 +69,7 @@ const ApartmentDialog = (props) => {
                 touched: {
                     name: true,
                     description: true,
-                    floorArea: true,
+                    floorAreaSize: true,
                     pricePerMonth: true,
                     numberOfRooms: true,
                     address: true,
@@ -118,6 +84,7 @@ const ApartmentDialog = (props) => {
             Geocode.fromAddress(formState.values['address']).then(
                 (response) => {
                     const { lat, lng } = response.results[0].geometry.location;
+                    console.log(lat, lng);
                     setFormState((formState) => ({
                         ...formState,
                         values: {
@@ -126,6 +93,8 @@ const ApartmentDialog = (props) => {
                             longitude: lng,
                         },
                     }));
+                    const { geoCodeType, ...rest } = { ...formState.values, latitude: lat, longitude: lng };
+                    handleSaveAction({ data: { ...rest, associated_realtor: email } });
                 },
                 (error) => {
                     console.log('invalid address');
@@ -136,6 +105,7 @@ const ApartmentDialog = (props) => {
             Geocode.fromLatLng(formState.values['latitude'], formState.values['longitude']).then(
                 (response) => {
                     const address = response.results[0].formatted_address;
+                    console.log(address);
                     setFormState((formState) => ({
                         ...formState,
                         values: {
@@ -143,6 +113,8 @@ const ApartmentDialog = (props) => {
                             address: address,
                         },
                     }));
+                    const { geoCodeType, ...rest } = { ...formState.values, address };
+                    handleSaveAction({ data: { ...rest, associated_realtor: email } });
                 },
                 (error) => {
                     console.log('invalid lat or longitute');
@@ -170,14 +142,14 @@ const ApartmentDialog = (props) => {
     return (
         <div>
             <Button color="primary" variant="contained" onClick={handleClick}>
-                {title}
+                {`${title} Apartment`}
             </Button>
             <Dialog
                 open={open}
                 PaperProps={{ classes: { root: classes.dialogPaper } }}
                 aria-labelledby="max-width-dialog-title"
                 fullWidth={true}>
-                <DialogTitle id="max-width-dialog-title">{title}</DialogTitle>
+                <DialogTitle id="max-width-dialog-title">{`${title} Apartment`}</DialogTitle>
                 <DialogContent dividers>
                     <div className={classes.form} noValidate>
                         <div className={classes.formControl}>
@@ -209,11 +181,11 @@ const ApartmentDialog = (props) => {
                         <div className={classes.formControl}>
                             <TextField
                                 label="Floor Area Size"
-                                name="floorArea"
-                                id="floorArea"
-                                error={hasError('floorArea')}
-                                helperText={hasError('floorArea') ? formState.errors.floorArea[0] : null}
-                                value={fieldValue('floorArea')}
+                                name="floorAreaSize"
+                                id="floorAreaSize"
+                                error={hasError('floorAreaSize')}
+                                helperText={hasError('floorAreaSize') ? formState.errors.floorAreaSize[0] : null}
+                                value={fieldValue('floorAreaSize')}
                                 classes={{ root: classes.subArea1 }}
                                 InputProps={{ inputComponent: NumberFormatCustom }}
                                 onChange={handleChange}
@@ -307,10 +279,10 @@ const ApartmentDialog = (props) => {
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleSave} color="primary" variant="contained" startIcon={<SaveIcon />}>
-                        Save
+                    <Button autoFocus onClick={handleSave} disabled={fetching} color="primary" variant="contained" startIcon={<SaveIcon />}>
+                        {title} {fetching && <CircularProgress size={20} />}
                     </Button>
-                    <Button autoFocus onClick={handleClick} variant="contained">
+                    <Button autoFocus onClick={handleClick} disabled={fetching} variant="contained">
                         Cancel
                     </Button>
                 </DialogActions>
