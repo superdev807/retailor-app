@@ -8,3 +8,7 @@ export const selectGlobal = (state) => state.Apartments || initialState;
 export const makeSelectApartments = createSelector(selectGlobal, (globalState) => globalState.apartments);
 
 export const makeSelectCreatingApartment = createSelector(selectGlobal, (globalState) => globalState.apartmentCreating === API_PENDING);
+
+export const makeSelectPageNum = createSelector(selectGlobal, (globalState) => globalState.pageNum);
+
+export const makeSelectPageCount = createSelector(selectGlobal, (globalState) => globalState.pageCount);

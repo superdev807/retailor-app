@@ -8,7 +8,14 @@ exports.createApartment = (req, res) => {
         .catch((err) => console.log(err));
 };
 
-exports.readApartments = (req, res) => {};
+exports.readApartments = (req, res) => {
+    console.log(req.body);
+    const pageNum = parseInt(req.body.pageNum) || 1;
+    const pageLimit = parseInt(req.body.pageLimit) || 5;
+    Apartment.paginate({}, { page: pageNum, limit: pageLimit })
+        .then((result) => res.json(result))
+        .catch((err) => console.log(err));
+};
 
 exports.updateApartment = (req, res) => {};
 

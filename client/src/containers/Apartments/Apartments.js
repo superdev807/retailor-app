@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { Grid } from '@material-ui/core';
 import { makeSelectAuthUser } from 'containers/App/redux/selectors';
-import { makeSelectCreatingApartment, makeSelectApartments } from './redux/selector';
+import { makeSelectCreatingApartment, makeSelectApartments, makeSelectPageNum, makeSelectPageCount } from './redux/selector';
 import { useDispatch, useSelector } from 'react-redux';
 import { ApartmentsToolbar, ApartmentsTable } from './components';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -22,20 +23,21 @@ const useStyles = makeStyles((theme) => ({
 const Apartments = () => {
     const authUser = useSelector(makeSelectAuthUser);
     const classes = useStyles();
-    const users = [];
     let key = 'Apartments';
     useInjectReducer({ key, reducer: ApartmentReducer });
     useInjectSaga({ key, saga: ApartmentSaga });
     const creatingApartment = useSelector(makeSelectCreatingApartment);
     const apartments = useSelector(makeSelectApartments);
+    const pageNum = useSelector(makeSelectPageNum);
+    const pageCnt = useSelector(makeSelectPageCount);
     const dispatch = useDispatch();
 
     const createApartmentFunc = (data) => {
         dispatch(createApartment(data));
     };
 
-    const readApartmentsFunc = () => {
-        dispatch(readApartments());
+    const readApartmentsFunc = (data) => {
+        dispatch(readApartments({ data }));
     };
 
     const updateApartmentFunc = (data) => {
@@ -47,26 +49,34 @@ const Apartments = () => {
     };
 
     useEffect(() => {
-        readApartmentsFunc();
+        readApartmentsFunc({ pageNum });
     }, []);
 
     return (
         <div className={classes.root}>
-            {authUser.role !== 'client' && (
-                <ApartmentsToolbar
-                    role={authUser.role}
-                    email={authUser.email}
-                    creatingApartment={creatingApartment}
-                    createApartment={createApartmentFunc}
-                />
-            )}
-            <div className={classes.content}>
-                <ApartmentsTable
-                    apartments={apartments}
-                    updateApartmentFunc={updateApartmentFunc}
-                    deleteApartmentFunc={deleteApartmentFunc}
-                />
-            </div>
+            <Grid container spacing={4}>
+                <Grid item lg={8} md={12} xl={9} xs={12}>
+                    {authUser.role !== 'client' && (
+                        <ApartmentsToolbar
+                            role={authUser.role}
+                            email={authUser.email}
+                            creatingApartment={creatingApartment}
+                            createApartment={createApartmentFunc}
+                        />
+                    )}
+                    <div className={classes.content}>
+                        <ApartmentsTable
+                            apartments={apartments}
+                            pageNum={pageNum}
+                            pageCnt={pageCnt}
+                            readApartmentsFunc={readApartmentsFunc}
+                            updateApartmentFunc={updateApartmentFunc}
+                            deleteApartmentFunc={deleteApartmentFunc}
+                        />
+                    </div>
+                </Grid>
+                <Grid item lg={4} md={6} xl={3} xs={12}></Grid>
+            </Grid>
         </div>
     );
 };

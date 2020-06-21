@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePagniate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 
 const ApartmentSchema = new Schema({
@@ -38,10 +39,15 @@ const ApartmentSchema = new Schema({
         type: Object,
         required: true,
     },
+    available_state: {
+        type: String,
+        default: 'Available',
+    },
     date: {
         type: Date,
         default: Date.now,
     },
 });
 
+ApartmentSchema.plugin(mongoosePagniate);
 module.exports = User = mongoose.model('apartments', ApartmentSchema);

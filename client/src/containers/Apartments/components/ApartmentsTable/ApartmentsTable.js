@@ -3,12 +3,10 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { makeStyles } from '@material-ui/styles';
 import {
     Card,
     CardActions,
     CardContent,
-    Avatar,
     Table,
     TableBody,
     TableCell,
@@ -18,40 +16,21 @@ import {
     TablePagination,
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-    root: {},
-    content: {
-        padding: 0,
-    },
-    inner: {
-        minWidth: 1050,
-    },
-    nameContainer: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    avatar: {
-        marginRight: theme.spacing(2),
-    },
-    actions: {
-        justifyContent: 'flex-end',
-    },
-}));
+import { useStyles } from './styles';
 
 const ApartmentsTable = (props) => {
-    const { className, apartments, updateApartmentFunc, deleteApartmentFunc, ...rest } = props;
+    const { className, pageNum, pageCnt, apartments, updateApartmentFunc, deleteApartmentFunc, readApartmentsFunc, ...rest } = props;
 
     const classes = useStyles();
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(0);
 
     const handlePageChange = (event, page) => {
-        setPage(page);
+        // setPage(page);
     };
 
     const handleRowsPerPageChange = (event) => {
-        setRowsPerPage(event.target.value);
+        // setRowsPerPage(event.target.value);
     };
+    console.log('>>>', apartments);
 
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
@@ -68,25 +47,22 @@ const ApartmentsTable = (props) => {
                                     <TableCell>Number of rooms</TableCell>
                                     <TableCell>Address</TableCell>
                                     <TableCell>Added date</TableCell>
+                                    <TableCell>Current State</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {apartments.slice(0, rowsPerPage).map((user) => (
-                                    <TableRow className={classes.tableRow} hover key={user.id}>
-                                        <TableCell>
-                                            <div className={classes.nameContainer}>
-                                                <Avatar className={classes.avatar} src={user.avatarUrl}>
-                                                    {user.name}
-                                                </Avatar>
-                                                <Typography variant="body1">{user.name}</Typography>
-                                            </div>
+                                {apartments.slice(0, 20).map((apartment, index) => (
+                                    <TableRow className={classes.tableRow} hover key={`apartment-${index}`}>
+                                        <TableCell className={classes.normalTableCell}>{apartment.name}</TableCell>
+                                        <TableCell className={classes.descriptionCell}>{apartment.description}</TableCell>
+                                        <TableCell className={classes.normalTableCell}>{apartment.pricePerMonth}</TableCell>
+                                        <TableCell className={classes.normalTableCell}>{apartment.floorAreaSize}</TableCell>
+                                        <TableCell className={classes.normalTableCell}>{apartment.numberOfRooms}</TableCell>
+                                        <TableCell className={classes.normalTableCell}>{apartment.address}</TableCell>
+                                        <TableCell className={classes.normalTableCell}>
+                                            {moment(apartment.date).format('DD/MM/YYYY')}
                                         </TableCell>
-                                        <TableCell>{user.email}</TableCell>
-                                        <TableCell>
-                                            {user.address.city}, {user.address.state}, {user.address.country}
-                                        </TableCell>
-                                        <TableCell>{user.phone}</TableCell>
-                                        <TableCell>{moment(user.createdAt).format('DD/MM/YYYY')}</TableCell>
+                                        <TableCell className={classes.normalTableCell}>{apartment.available_state}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -97,11 +73,11 @@ const ApartmentsTable = (props) => {
             <CardActions className={classes.actions}>
                 <TablePagination
                     component="div"
-                    count={apartments.length}
+                    count={pageCnt}
                     onChangePage={handlePageChange}
                     onChangeRowsPerPage={handleRowsPerPageChange}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
+                    page={pageNum - 1}
+                    rowsPerPage={5}
                     rowsPerPageOptions={[5, 10, 25]}
                 />
             </CardActions>
