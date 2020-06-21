@@ -57,7 +57,6 @@ const ApartmentDialog = (props) => {
             setApartmentCreatingStateFunc('initialized');
             readApartments({ pageNum, pageLimit: rowsPerPage });
             handleClick();
-            // setApartmentCreatingStateFunc('initialized');
         }
     }, [apartmentCreatingState]);
 

@@ -88,12 +88,12 @@ const ApartmentsTable = (props) => {
 
     useEffect(() => {
         if (apartmentDeletingState === API_SUCCESS) {
-            readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
+            if (pageCnt === (pageNum - 1) * rowsPerPage + 1) {
+                setPageNumber(pageNum - 1);
+            } else readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
             handleRemoveClose();
         }
     }, [apartmentDeletingState]);
-
-    console.log('>>>', readingApartments, pageNum);
 
     return (
         <Card {...rest} className={clsx(classes.root, className)}>

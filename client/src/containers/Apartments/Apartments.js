@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import Map from 'containers/Map';
@@ -45,6 +45,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
+};
+
 const Apartments = () => {
     const authUser = useSelector(makeSelectAuthUser);
     const classes = useStyles();
@@ -56,6 +64,7 @@ const Apartments = () => {
     const deletingApartment = useSelector(makeSelectDeletingApartment);
     const apartments = useSelector(makeSelectApartments);
     const pageNum = useSelector(makeSelectPageNum);
+    const prevPageNum = usePrevious(pageNum);
     const pageCnt = useSelector(makeSelectTotalLimit);
     const rowsPerPage = useSelector(makeSelectRowsPerPage);
     const apartmentCreatingState = useSelector(makeSelectApartmentCreatingState);
@@ -63,6 +72,8 @@ const Apartments = () => {
     const successMsg = useSelector(makeSelectSuccessMsg);
     const failedMsg = useSelector(makeSelectFailedMsg);
     const dispatch = useDispatch();
+
+    console.log(prevPageNum, pageNum);
 
     const createApartmentFunc = (data) => {
         dispatch(createApartment(data));
@@ -106,8 +117,12 @@ const Apartments = () => {
         });
     };
 
+    console.log('>>>', pageNum, rowsPerPage);
+
     useEffect(() => {
-        readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
+        if (prevPageNum === undefined || prevPageNum < pageNum) {
+            readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
+        }
     }, [pageNum, rowsPerPage, pageCnt]);
 
     return (
