@@ -103,7 +103,7 @@ const ApartmentsTable = (props) => {
             <CardContent className={classes.content}>
                 <PerfectScrollbar>
                     <div className={classes.inner}>
-                        <Table>
+                        <Table className={classes.mainTable}>
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Name</TableCell>
@@ -120,7 +120,7 @@ const ApartmentsTable = (props) => {
                             </TableHead>
                             <TableBody>
                                 {apartments.slice(rowsPerPage * (pageNum - 1), rowsPerPage * pageNum).map((apartment, index) => (
-                                    <TableRow className={classes.tableRow} hover key={`apartment-${index}`}>
+                                    <TableRow className={classes.tableRow} key={`apartment-${index}`}>
                                         <TableCell className={classes.normalTableCell}>{apartment.name}</TableCell>
                                         <TableCell className={classes.descriptionCell}>{apartment.description}</TableCell>
                                         <TableCell className={classes.normalTableCell}>{apartment.pricePerMonth}</TableCell>
@@ -132,16 +132,18 @@ const ApartmentsTable = (props) => {
                                         </TableCell>
                                         <TableCell className={classes.normalTableCell}>{apartment.available_state}</TableCell>
                                         <TableCell className={classes.normalTableCell}>{apartment.associated_realtor.userName}</TableCell>
-                                        <TableCell className={classes.normalTableCell}>
-                                            <div className={classes.actionCell}>
-                                                <IconButton aria-label="edit" size="small">
-                                                    <EditIcon />
-                                                </IconButton>
-                                                <IconButton aria-label="edit" size="small" onClick={openRemoveDlg(apartment)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </div>
-                                        </TableCell>
+                                        {userRole !== 'client' && (
+                                            <TableCell className={classes.normalTableCell}>
+                                                <div className={classes.actionCell}>
+                                                    <IconButton aria-label="edit" size="small">
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                    <IconButton aria-label="edit" size="small" onClick={openRemoveDlg(apartment)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </div>
+                                            </TableCell>
+                                        )}
                                     </TableRow>
                                 ))}
                             </TableBody>

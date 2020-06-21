@@ -1,11 +1,13 @@
 import { makeStyles } from '@material-ui/styles';
+import { TextareaAutosize } from '@material-ui/core';
 export const useStyles = makeStyles((theme) => ({
     root: {},
     content: {
         padding: 0,
     },
     inner: {
-        minWidth: 1050,
+        width: '100%',
+        overflow: 'auto',
     },
     nameContainer: {
         display: 'flex',
@@ -25,5 +27,8 @@ export const useStyles = makeStyles((theme) => ({
     },
     loading: {
         margin: 10,
+    },
+    mainTable: {
+        minWidth: 1050,
     },
 }));
