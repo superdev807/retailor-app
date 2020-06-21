@@ -8,11 +8,23 @@ import clsx from 'clsx';
 import validate from 'validate.js';
 import { schema, addressSchema, geoCodeSchema } from './schema';
 import { useStyles } from './styles';
+import { API_SUCCESS } from 'redux/api/request';
 
 const ApartmentDialog = (props) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const { title, role, email, fetching, handleSaveAction } = props;
+    const {
+        title,
+        role,
+        email,
+        fetching,
+        handleSaveAction,
+        pageNum,
+        rowsPerPage,
+        apartmentCreatingState,
+        setApartmentCreatingStateFunc,
+        readApartments,
+    } = props;
     const [geoCodeError, setGeoCodeError] = useState('');
 
     const [formState, setFormState] = useState({
@@ -38,6 +50,15 @@ const ApartmentDialog = (props) => {
             setGeoCodeError('');
         }
     }, [open]);
+
+    useEffect(() => {
+        if (apartmentCreatingState === API_SUCCESS) {
+            setApartmentCreatingStateFunc('initialized');
+            readApartments({ pageNum, pageLimit: rowsPerPage });
+            handleClick();
+            // setApartmentCreatingStateFunc('initialized');
+        }
+    }, [apartmentCreatingState]);
 
     useEffect(() => {
         const errors = validate(formState.values, schema);

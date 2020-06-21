@@ -12,3 +12,9 @@ export const makeSelectCreatingApartment = createSelector(selectGlobal, (globalS
 export const makeSelectPageNum = createSelector(selectGlobal, (globalState) => globalState.pageNum);
 
 export const makeSelectPageCount = createSelector(selectGlobal, (globalState) => globalState.pageCount);
+
+export const makeSelectRowsPerPage = createSelector(selectGlobal, (globalState) => globalState.rowsPerPage);
+
+export const makeSelectApartmentCreatingState = createSelector(selectGlobal, (globalState) => globalState.apartmentCreating);
+
+export const makeSelectTotalLimit = createSelector(selectGlobal, (globalState) => globalState.totalLimit);

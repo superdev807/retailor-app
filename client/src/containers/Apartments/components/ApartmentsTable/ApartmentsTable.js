@@ -1,36 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import {
-    Card,
-    CardActions,
-    CardContent,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Typography,
-    TablePagination,
-} from '@material-ui/core';
+import { Card, CardActions, CardContent, Table, TableBody, TableCell, TableHead, TableRow, TablePagination } from '@material-ui/core';
 
 import { useStyles } from './styles';
 
 const ApartmentsTable = (props) => {
-    const { className, pageNum, pageCnt, apartments, updateApartmentFunc, deleteApartmentFunc, readApartmentsFunc, ...rest } = props;
+    const {
+        className,
+        pageNum,
+        pageCnt,
+        apartments,
+        updateApartmentFunc,
+        deleteApartmentFunc,
+        readApartmentsFunc,
+        rowsPerPage,
+        setRowCount,
+        setPageNumber,
+        ...rest
+    } = props;
 
     const classes = useStyles();
 
+    console.log('>>>', pageNum, apartments);
+
     const handlePageChange = (event, page) => {
-        // setPage(page);
+        setPageNumber(page + 1);
     };
 
     const handleRowsPerPageChange = (event) => {
-        // setRowsPerPage(event.target.value);
+        setRowCount(parseInt(event.target.value));
     };
-    console.log('>>>', apartments);
 
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
@@ -51,7 +53,7 @@ const ApartmentsTable = (props) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {apartments.slice(0, 20).map((apartment, index) => (
+                                {apartments.slice(rowsPerPage * (pageNum - 1), rowsPerPage * pageNum).map((apartment, index) => (
                                     <TableRow className={classes.tableRow} hover key={`apartment-${index}`}>
                                         <TableCell className={classes.normalTableCell}>{apartment.name}</TableCell>
                                         <TableCell className={classes.descriptionCell}>{apartment.description}</TableCell>
@@ -77,7 +79,7 @@ const ApartmentsTable = (props) => {
                     onChangePage={handlePageChange}
                     onChangeRowsPerPage={handleRowsPerPageChange}
                     page={pageNum - 1}
-                    rowsPerPage={5}
+                    rowsPerPage={rowsPerPage}
                     rowsPerPageOptions={[5, 10, 25]}
                 />
             </CardActions>

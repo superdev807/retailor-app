@@ -3,12 +3,27 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import Map from 'containers/Map';
 import { makeSelectAuthUser } from 'containers/App/redux/selectors';
-import { makeSelectCreatingApartment, makeSelectApartments, makeSelectPageNum, makeSelectPageCount } from './redux/selector';
+import {
+    makeSelectCreatingApartment,
+    makeSelectApartments,
+    makeSelectPageNum,
+    makeSelectTotalLimit,
+    makeSelectRowsPerPage,
+    makeSelectApartmentCreatingState,
+} from './redux/selector';
 import { useDispatch, useSelector } from 'react-redux';
 import { ApartmentsToolbar, ApartmentsTable } from './components';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import { createApartment, readApartments, updateApartment, deleteApartment } from './redux/actions';
+import {
+    createApartment,
+    readApartments,
+    updateApartment,
+    deleteApartment,
+    setRowsPerPage,
+    setPageNum,
+    setApartmentCreatingState,
+} from './redux/actions';
 import ApartmentReducer from './redux/reducer';
 import ApartmentSaga from './redux/saga';
 
@@ -30,7 +45,9 @@ const Apartments = () => {
     const creatingApartment = useSelector(makeSelectCreatingApartment);
     const apartments = useSelector(makeSelectApartments);
     const pageNum = useSelector(makeSelectPageNum);
-    const pageCnt = useSelector(makeSelectPageCount);
+    const pageCnt = useSelector(makeSelectTotalLimit);
+    const rowsPerPage = useSelector(makeSelectRowsPerPage);
+    const apartmentCreatingState = useSelector(makeSelectApartmentCreatingState);
     const dispatch = useDispatch();
 
     const createApartmentFunc = (data) => {
@@ -49,6 +66,18 @@ const Apartments = () => {
         dispatch(deleteApartment(data));
     };
 
+    const setRowCount = (data) => {
+        dispatch(setRowsPerPage(data));
+    };
+
+    const setPageNumber = (data) => {
+        dispatch(setPageNum(data));
+    };
+
+    const setApartmentCreatingStateFunc = (data) => {
+        dispatch(setApartmentCreatingState(data));
+    };
+
     const getLocations = (datas) => {
         return datas.map((data) => {
             return { lat: data.latitude, lng: data.longitude };
@@ -56,8 +85,8 @@ const Apartments = () => {
     };
 
     useEffect(() => {
-        readApartmentsFunc({ pageNum });
-    }, []);
+        readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
+    }, [pageNum, rowsPerPage, pageCnt]);
 
     return (
         <div className={classes.root}>
@@ -67,6 +96,11 @@ const Apartments = () => {
                     email={authUser.email}
                     creatingApartment={creatingApartment}
                     createApartment={createApartmentFunc}
+                    readApartments={readApartmentsFunc}
+                    pageNum={pageNum}
+                    rowsPerPage={rowsPerPage}
+                    apartmentCreatingState={apartmentCreatingState}
+                    setApartmentCreatingStateFunc={setApartmentCreatingStateFunc}
                 />
             )}
             <Grid container spacing={4}>
@@ -76,6 +110,9 @@ const Apartments = () => {
                             apartments={apartments}
                             pageNum={pageNum}
                             pageCnt={pageCnt}
+                            rowsPerPage={rowsPerPage}
+                            setPageNumber={setPageNumber}
+                            setRowCount={setRowCount}
                             readApartmentsFunc={readApartmentsFunc}
                             updateApartmentFunc={updateApartmentFunc}
                             deleteApartmentFunc={deleteApartmentFunc}

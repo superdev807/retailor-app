@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GoogleMapReact from 'google-map-react';
 import Marker from './Marker';
 
@@ -13,7 +13,7 @@ const SimpleMap = (props) => {
         };
     };
 
-    const [center, setCenter] = useState({ lat: -33.8688197, lng: 151.2092955 });
+    const center = { lat: -33.8688197, lng: 151.2092955 };
     return (
         <div style={{ height: '100vh', width: '100%' }}>
             <GoogleMapReact

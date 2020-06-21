@@ -13,7 +13,10 @@ exports.readApartments = (req, res) => {
     const pageNum = parseInt(req.body.pageNum) || 1;
     const pageLimit = parseInt(req.body.pageLimit) || 5;
     Apartment.paginate({}, { page: pageNum, limit: pageLimit })
-        .then((result) => res.json(result))
+        .then((result) => {
+            console.log('>>', result);
+            return res.json(result);
+        })
         .catch((err) => console.log(err));
 };
 
