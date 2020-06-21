@@ -39,8 +39,8 @@ const apartmentReducer = (state = initialState, action) =>
             case requestSuccess(READ_APARTMENTS):
                 let pageSt = action.payload.limit * (action.payload.page - 1);
                 let totalLimit = Math.min(pageSt + action.payload.limit, action.payload.total);
-                let orgLen = draft.apartments.length;
-                for (let i = orgLen; i < totalLimit; ++i) draft.apartments[i] = action.payload.docs[i - pageSt];
+                for (let i = pageSt; i < totalLimit; ++i) draft.apartments[i] = action.payload.docs[i - pageSt];
+                while (draft.apartments.length > action.payload.total) draft.apartments.pop();
                 draft.totalLimit = action.payload.total;
                 draft.pageCount = action.payload.pages;
                 draft.apartmentsReading = API_SUCCESS;

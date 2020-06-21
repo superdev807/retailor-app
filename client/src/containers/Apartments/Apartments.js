@@ -94,6 +94,7 @@ const Apartments = () => {
                 <ApartmentsToolbar
                     role={authUser.role}
                     email={authUser.email}
+                    userName={authUser.firstName + ' ' + authUser.lastName}
                     creatingApartment={creatingApartment}
                     createApartment={createApartmentFunc}
                     readApartments={readApartmentsFunc}
@@ -111,6 +112,7 @@ const Apartments = () => {
                             pageNum={pageNum}
                             pageCnt={pageCnt}
                             rowsPerPage={rowsPerPage}
+                            userRole={authUser.role}
                             setPageNumber={setPageNumber}
                             setRowCount={setRowCount}
                             readApartmentsFunc={readApartmentsFunc}

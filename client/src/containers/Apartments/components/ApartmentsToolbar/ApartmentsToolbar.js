@@ -25,6 +25,7 @@ const ApartmentsToolbar = (props) => {
         className,
         role,
         email,
+        userName,
         creatingApartment,
         createApartment,
         pageNum,
@@ -45,6 +46,7 @@ const ApartmentsToolbar = (props) => {
                     title={'Add'}
                     role={role}
                     email={email}
+                    userName={userName}
                     fetching={creatingApartment}
                     handleSaveAction={createApartment}
                     pageNum={pageNum}

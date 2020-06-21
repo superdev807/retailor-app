@@ -17,6 +17,7 @@ const ApartmentDialog = (props) => {
         title,
         role,
         email,
+        userName,
         fetching,
         handleSaveAction,
         pageNum,
@@ -115,7 +116,7 @@ const ApartmentDialog = (props) => {
                         },
                     }));
                     const { geoCodeType, ...rest } = { ...formState.values, latitude: lat, longitude: lng };
-                    handleSaveAction({ data: { ...rest, associated_realtor: email } });
+                    handleSaveAction({ data: { ...rest, associated_realtor: { email, userName } } });
                 },
                 (error) => {
                     console.log('invalid address');
@@ -135,7 +136,7 @@ const ApartmentDialog = (props) => {
                         },
                     }));
                     const { geoCodeType, ...rest } = { ...formState.values, address };
-                    handleSaveAction({ data: { ...rest, associated_realtor: email } });
+                    handleSaveAction({ data: { ...rest, associated_realtor: { email, userName } } });
                 },
                 (error) => {
                     console.log('invalid lat or longitute');

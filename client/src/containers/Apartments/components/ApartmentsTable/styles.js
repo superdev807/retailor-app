@@ -20,4 +20,7 @@ export const useStyles = makeStyles((theme) => ({
     descriptionCell: {
         width: '30%',
     },
+    actionCell: {
+        display: 'flex',
+    },
 }));

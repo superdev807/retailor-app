@@ -15,7 +15,7 @@ const SimpleMap = (props) => {
 
     const center = { lat: -33.8688197, lng: 151.2092955 };
     return (
-        <div style={{ height: '100vh', width: '100%' }}>
+        <div style={{ height: '100vh', width: '100%', marginTop: '15px' }}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: 'replace your api key' }}
                 defaultCenter={center}

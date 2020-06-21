@@ -3,7 +3,20 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { Card, CardActions, CardContent, Table, TableBody, TableCell, TableHead, TableRow, TablePagination } from '@material-ui/core';
+import {
+    Card,
+    CardActions,
+    CardContent,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TablePagination,
+    IconButton,
+} from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import { useStyles } from './styles';
 
@@ -19,12 +32,11 @@ const ApartmentsTable = (props) => {
         rowsPerPage,
         setRowCount,
         setPageNumber,
+        userRole,
         ...rest
     } = props;
 
     const classes = useStyles();
-
-    console.log('>>>', pageNum, apartments);
 
     const handlePageChange = (event, page) => {
         setPageNumber(page + 1);
@@ -33,7 +45,6 @@ const ApartmentsTable = (props) => {
     const handleRowsPerPageChange = (event) => {
         setRowCount(parseInt(event.target.value));
     };
-
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
             <CardContent className={classes.content}>
@@ -44,12 +55,14 @@ const ApartmentsTable = (props) => {
                                 <TableRow>
                                     <TableCell>Name</TableCell>
                                     <TableCell>Description</TableCell>
-                                    <TableCell>Floor Area Size</TableCell>
-                                    <TableCell>Price per month</TableCell>
+                                    <TableCell>Floor Area Size(m²)</TableCell>
+                                    <TableCell>Price per month($)</TableCell>
                                     <TableCell>Number of rooms</TableCell>
                                     <TableCell>Address</TableCell>
                                     <TableCell>Added date</TableCell>
                                     <TableCell>Current State</TableCell>
+                                    <TableCell>Associated Realtor</TableCell>
+                                    {userRole !== 'client' && <TableCell>Action</TableCell>}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -65,6 +78,17 @@ const ApartmentsTable = (props) => {
                                             {moment(apartment.date).format('DD/MM/YYYY')}
                                         </TableCell>
                                         <TableCell className={classes.normalTableCell}>{apartment.available_state}</TableCell>
+                                        <TableCell className={classes.normalTableCell}>{apartment.associated_realtor.userName}</TableCell>
+                                        <TableCell className={classes.normalTableCell}>
+                                            <div className={classes.actionCell}>
+                                                <IconButton aria-label="edit" size="small">
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <IconButton aria-label="edit" size="small">
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </div>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
