@@ -6,3 +6,6 @@ export const GET_GEO_CODE = 'Apartments/GET_GEO_CODE';
 export const SET_PAGE_NUM = 'Apartments/SET_PAGE_NUM';
 export const SET_ROWS_PER_PAGE = 'Apartments/SET_ROWS_PER_PAGE';
 export const SET_APARTMENT_CREATING_STATE = 'Apartments/SET_APARTMENT_CREATING_STATE';
+export const SET_APARTMENT_DELETING_STATE = 'Apartments/SET_APARTMENT_DELETING_STATE';
+export const SET_SUCCESS_MSG = 'Apartments/SET_SUCCESS_MSG';
+export const SET_FAILED_MSG = 'Apartments/SET_FAILED_MSG';

@@ -23,4 +23,7 @@ export const useStyles = makeStyles((theme) => ({
     actionCell: {
         display: 'flex',
     },
+    loading: {
+        margin: 10,
+    },
 }));

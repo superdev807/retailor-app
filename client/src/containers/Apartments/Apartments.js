@@ -5,11 +5,17 @@ import Map from 'containers/Map';
 import { makeSelectAuthUser } from 'containers/App/redux/selectors';
 import {
     makeSelectCreatingApartment,
+    makeSelectReadingApartment,
+    makeSelectDeletingApartment,
+    makeSelectApartmentCreatingState,
+    makeSelectApartmentReadingState,
+    makeSelectApartmentDeletingState,
     makeSelectApartments,
     makeSelectPageNum,
     makeSelectTotalLimit,
     makeSelectRowsPerPage,
-    makeSelectApartmentCreatingState,
+    makeSelectSuccessMsg,
+    makeSelectFailedMsg,
 } from './redux/selector';
 import { useDispatch, useSelector } from 'react-redux';
 import { ApartmentsToolbar, ApartmentsTable } from './components';
@@ -23,7 +29,10 @@ import {
     setRowsPerPage,
     setPageNum,
     setApartmentCreatingState,
+    setSuccessMsg,
+    setFailedMsg,
 } from './redux/actions';
+
 import ApartmentReducer from './redux/reducer';
 import ApartmentSaga from './redux/saga';
 
@@ -43,11 +52,16 @@ const Apartments = () => {
     useInjectReducer({ key, reducer: ApartmentReducer });
     useInjectSaga({ key, saga: ApartmentSaga });
     const creatingApartment = useSelector(makeSelectCreatingApartment);
+    const readingApartments = useSelector(makeSelectReadingApartment);
+    const deletingApartment = useSelector(makeSelectDeletingApartment);
     const apartments = useSelector(makeSelectApartments);
     const pageNum = useSelector(makeSelectPageNum);
     const pageCnt = useSelector(makeSelectTotalLimit);
     const rowsPerPage = useSelector(makeSelectRowsPerPage);
     const apartmentCreatingState = useSelector(makeSelectApartmentCreatingState);
+    const apartmentDeletingState = useSelector(makeSelectApartmentDeletingState);
+    const successMsg = useSelector(makeSelectSuccessMsg);
+    const failedMsg = useSelector(makeSelectFailedMsg);
     const dispatch = useDispatch();
 
     const createApartmentFunc = (data) => {
@@ -76,6 +90,14 @@ const Apartments = () => {
 
     const setApartmentCreatingStateFunc = (data) => {
         dispatch(setApartmentCreatingState(data));
+    };
+
+    const setSuccessMessage = (data) => {
+        dispatch(setSuccessMsg(data));
+    };
+
+    const setFailedMessage = (data) => {
+        dispatch(setFailedMsg(data));
     };
 
     const getLocations = (datas) => {
@@ -118,6 +140,13 @@ const Apartments = () => {
                             readApartmentsFunc={readApartmentsFunc}
                             updateApartmentFunc={updateApartmentFunc}
                             deleteApartmentFunc={deleteApartmentFunc}
+                            apartmentDeletingState={apartmentDeletingState}
+                            readingApartments={readingApartments}
+                            deletingApartment={deletingApartment}
+                            successMessage={successMsg}
+                            failedMessage={failedMsg}
+                            setSuccessMessage={setSuccessMessage}
+                            setFailedMessage={setFailedMessage}
                         />
                     </div>
                 </Grid>

@@ -8,17 +8,23 @@ import {
     SET_PAGE_NUM,
     SET_ROWS_PER_PAGE,
     SET_APARTMENT_CREATING_STATE,
+    SET_APARTMENT_DELETING_STATE,
+    SET_SUCCESS_MSG,
+    SET_FAILED_MSG,
 } from './constant';
 
 export const initialState = {
     newGeoCode: '',
     apartmentCreating: 'initialized',
     apartmentsReading: 'initialized',
+    apartmentDeleteing: 'initialized',
     apartments: [],
     totalLimit: 0,
     pageCount: 1,
     pageNum: 1,
     rowsPerPage: 5,
+    successMsg: '',
+    failedMsg: '',
 };
 
 const apartmentReducer = (state = initialState, action) =>
@@ -48,6 +54,17 @@ const apartmentReducer = (state = initialState, action) =>
             case requestFail(READ_APARTMENTS):
                 draft.apartmentsReading = API_FAIL;
                 break;
+            case requestPending(DELETE_APARTMENT):
+                draft.apartmentDeleteing = API_PENDING;
+                break;
+            case requestSuccess(DELETE_APARTMENT):
+                draft.apartmentDeleteing = API_SUCCESS;
+                draft.successMsg = 'Delete success';
+                break;
+            case requestFail(DELETE_APARTMENT):
+                draft.apartmentDeleteing = API_FAIL;
+                draft.failedMsg = 'Delete failed';
+                break;
             case SET_PAGE_NUM:
                 if (action.payload <= draft.totalLimit) {
                     draft.pageNum = action.payload;
@@ -58,6 +75,15 @@ const apartmentReducer = (state = initialState, action) =>
                 break;
             case SET_APARTMENT_CREATING_STATE:
                 draft.apartmentCreating = action.payload;
+                break;
+            case SET_APARTMENT_DELETING_STATE:
+                draft.apartmentDeleteing = action.payload;
+                break;
+            case SET_SUCCESS_MSG:
+                draft.successMsg = action.payload;
+                break;
+            case SET_FAILED_MSG:
+                draft.failedMsg = action.payload;
                 break;
             default:
                 break;

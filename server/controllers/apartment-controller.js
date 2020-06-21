@@ -14,7 +14,6 @@ exports.readApartments = (req, res) => {
     const pageLimit = parseInt(req.body.pageLimit) || 5;
     Apartment.paginate({}, { page: pageNum, limit: pageLimit })
         .then((result) => {
-            console.log('>>', result);
             return res.json(result);
         })
         .catch((err) => console.log(err));
@@ -22,4 +21,11 @@ exports.readApartments = (req, res) => {
 
 exports.updateApartment = (req, res) => {};
 
-exports.deleteApartment = (req, res) => {};
+exports.deleteApartment = (req, res) => {
+    console.log(req.body);
+    Apartment.findOneAndDelete({ _id: req.body.id })
+        .then(() => {
+            return res.json({ message: 'Apartment Deleted Successfully' });
+        })
+        .catch((err) => console.log(err));
+};

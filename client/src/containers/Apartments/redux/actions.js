@@ -6,6 +6,9 @@ import {
     SET_PAGE_NUM,
     SET_ROWS_PER_PAGE,
     SET_APARTMENT_CREATING_STATE,
+    SET_APARTMENT_DELETING_STATE,
+    SET_SUCCESS_MSG,
+    SET_FAILED_MSG,
 } from './constant';
 
 export function createApartment(payload) {
@@ -53,6 +56,27 @@ export function setRowsPerPage(payload) {
 export function setApartmentCreatingState(payload) {
     return {
         type: SET_APARTMENT_CREATING_STATE,
+        payload,
+    };
+}
+
+export function setApartmentDeletingState(payload) {
+    return {
+        type: SET_APARTMENT_DELETING_STATE,
+        payload,
+    };
+}
+
+export function setSuccessMsg(payload) {
+    return {
+        type: SET_SUCCESS_MSG,
+        payload,
+    };
+}
+
+export function setFailedMsg(payload) {
+    return {
+        type: SET_FAILED_MSG,
         payload,
     };
 }

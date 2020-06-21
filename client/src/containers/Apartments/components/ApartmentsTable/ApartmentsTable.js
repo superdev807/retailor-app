@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { API_SUCCESS, API_FAIL } from 'redux/api/request';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
     Card,
@@ -17,7 +18,8 @@ import {
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import NormalDialog from 'components/NormalDialog';
+import Notification from 'components/Notification';
 import { useStyles } from './styles';
 
 const ApartmentsTable = (props) => {
@@ -33,6 +35,13 @@ const ApartmentsTable = (props) => {
         setRowCount,
         setPageNumber,
         userRole,
+        successMessage,
+        failedMessage,
+        setSuccessMessage,
+        setFailedMessage,
+        readingApartments,
+        deletingApartment,
+        apartmentDeletingState,
         ...rest
     } = props;
 
@@ -45,8 +54,52 @@ const ApartmentsTable = (props) => {
     const handleRowsPerPageChange = (event) => {
         setRowCount(parseInt(event.target.value));
     };
+
+    const [removeDlgOpen, setRemoveDlgOpen] = useState(false);
+    const [curApartment, setCurApartment] = useState({});
+
+    const openRemoveDlg = (apartment) => () => {
+        setRemoveDlgOpen(true);
+        setCurApartment(apartment);
+    };
+
+    const handleRemoveApartment = () => {
+        deleteApartmentFunc({ data: { id: curApartment._id } });
+    };
+
+    const handleRemoveClose = () => {
+        setRemoveDlgOpen(false);
+        setCurApartment({});
+    };
+
+    const failedMessageRemove = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setFailedMessage('');
+    };
+
+    const successMessageRemove = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSuccessMessage('');
+    };
+
+    useEffect(() => {
+        if (apartmentDeletingState === API_SUCCESS) {
+            readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
+            handleRemoveClose();
+        }
+    }, [apartmentDeletingState]);
+
+    console.log('>>>', readingApartments, pageNum);
+
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
+            <Notification message={successMessage} snackBarClose={successMessageRemove} msgType={'success'} />
+            <Notification error={failedMessage} snackBarClose={failedMessageRemove} msgType={'error'} />
+            {readingApartments && <h3 className={classes.loading}>{' Loading...'}</h3>}
             <CardContent className={classes.content}>
                 <PerfectScrollbar>
                     <div className={classes.inner}>
@@ -84,7 +137,7 @@ const ApartmentsTable = (props) => {
                                                 <IconButton aria-label="edit" size="small">
                                                     <EditIcon />
                                                 </IconButton>
-                                                <IconButton aria-label="edit" size="small">
+                                                <IconButton aria-label="edit" size="small" onClick={openRemoveDlg(apartment)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </div>
@@ -107,6 +160,12 @@ const ApartmentsTable = (props) => {
                     rowsPerPageOptions={[5, 10, 25]}
                 />
             </CardActions>
+            <NormalDialog
+                open={removeDlgOpen}
+                handleAgreeAction={handleRemoveApartment}
+                handleCancelAction={handleRemoveClose}
+                processing={deletingApartment}
+            />
         </Card>
     );
 };
