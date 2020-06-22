@@ -154,7 +154,7 @@ const SignIn = () => {
                                     Sign in now {isLogging && <CircularProgress size={20} />}
                                 </Button>
                                 <Typography color="textSecondary" variant="body1">
-                                    Don't have an account?
+                                    Don't have an account?{' '}
                                     <Link to="/sign-up" variant="h6">
                                         Sign up
                                     </Link>

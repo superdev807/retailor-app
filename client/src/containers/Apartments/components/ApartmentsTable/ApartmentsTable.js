@@ -68,8 +68,6 @@ const ApartmentsTable = (props) => {
         setRowCount(newRowVal);
     };
 
-    console.log('((', pageNum);
-
     const openEditDlg = (apartment) => () => {
         setEditOpen(true);
         setCurApartment(apartment);
