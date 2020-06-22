@@ -1,6 +1,7 @@
 import produce from 'immer';
-import { API_PENDING, API_SUCCESS, requestSuccess, requestPending } from 'redux/api/request';
+import { API_FAIL, API_PENDING, API_SUCCESS, requestSuccess, requestPending } from 'redux/api/request';
 import { CREATE_USER, UPDATE_USER, DELETE_USER, GET_USERS } from './constants';
+import { requestFail } from '../../../redux/api/request';
 
 export const initialState = {
     curUser: {},
@@ -25,6 +26,9 @@ const usersReducer = (state = initialState, action) =>
                 draft.users.push(action.payload);
                 draft.creatingState = API_SUCCESS;
                 break;
+            case requestFail(CREATE_USER):
+                draft.creatingState = API_FAIL;
+                break;
             case requestPending(UPDATE_USER):
                 draft.updatingState = API_PENDING;
                 break;
@@ -38,6 +42,9 @@ const usersReducer = (state = initialState, action) =>
                     draft.updatingState = API_SUCCESS;
                 }
                 break;
+            case requestFail(UPDATE_USER):
+                draft.updatingState = API_FAIL;
+                break;
             case requestPending(DELETE_USER):
                 draft.deletingState = API_PENDING;
                 break;
@@ -47,6 +54,9 @@ const usersReducer = (state = initialState, action) =>
                     draft.users = draft.users.filter((user) => user._id !== _id);
                     draft.deletingState = API_SUCCESS;
                 }
+                break;
+            case requestFail(DELETE_USER):
+                draft.deletingState = API_FAIL;
                 break;
             default:
                 break;
