@@ -31,8 +31,8 @@ const ApartmentsToolbar = (props) => {
         pageNum,
         rowsPerPage,
         apartmentCreatingState,
-        setApartmentCreatingStateFunc,
         readApartments,
+        createSucceed,
         ...rest
     } = props;
 
@@ -52,8 +52,8 @@ const ApartmentsToolbar = (props) => {
                     pageNum={pageNum}
                     rowsPerPage={rowsPerPage}
                     apartmentCreatingState={apartmentCreatingState}
-                    setApartmentCreatingStateFunc={setApartmentCreatingStateFunc}
                     readApartments={readApartments}
+                    actionSucceed={createSucceed}
                 />
             </div>
             <div className={classes.row}></div>

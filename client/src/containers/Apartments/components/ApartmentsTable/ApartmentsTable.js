@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { API_SUCCESS, API_FAIL } from 'redux/api/request';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
     Card,
@@ -41,7 +40,7 @@ const ApartmentsTable = (props) => {
         setFailedMessage,
         readingApartments,
         deletingApartment,
-        apartmentDeletingState,
+        deleteSucceed,
         ...rest
     } = props;
 
@@ -87,13 +86,13 @@ const ApartmentsTable = (props) => {
     };
 
     useEffect(() => {
-        if (apartmentDeletingState === API_SUCCESS) {
+        if (deleteSucceed) {
             if (pageCnt === (pageNum - 1) * rowsPerPage + 1) {
                 setPageNumber(pageNum - 1);
             } else readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
             handleRemoveClose();
         }
-    }, [apartmentDeletingState]);
+    }, [deleteSucceed]);
 
     return (
         <Card {...rest} className={clsx(classes.root, className)}>

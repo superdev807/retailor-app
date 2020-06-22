@@ -7,9 +7,8 @@ import {
     makeSelectCreatingApartment,
     makeSelectReadingApartment,
     makeSelectDeletingApartment,
-    makeSelectApartmentCreatingState,
-    makeSelectApartmentReadingState,
-    makeSelectApartmentDeletingState,
+    makeSelectApartmentCreateSuccess,
+    makeSelectApartmentDeleteSuccess,
     makeSelectApartments,
     makeSelectPageNum,
     makeSelectTotalLimit,
@@ -28,7 +27,6 @@ import {
     deleteApartment,
     setRowsPerPage,
     setPageNum,
-    setApartmentCreatingState,
     setSuccessMsg,
     setFailedMsg,
 } from './redux/actions';
@@ -67,13 +65,11 @@ const Apartments = () => {
     const prevPageNum = usePrevious(pageNum);
     const pageCnt = useSelector(makeSelectTotalLimit);
     const rowsPerPage = useSelector(makeSelectRowsPerPage);
-    const apartmentCreatingState = useSelector(makeSelectApartmentCreatingState);
-    const apartmentDeletingState = useSelector(makeSelectApartmentDeletingState);
+    const createSucceed = useSelector(makeSelectApartmentCreateSuccess);
+    const deleteSucceed = useSelector(makeSelectApartmentDeleteSuccess);
     const successMsg = useSelector(makeSelectSuccessMsg);
     const failedMsg = useSelector(makeSelectFailedMsg);
     const dispatch = useDispatch();
-
-    console.log(prevPageNum, pageNum);
 
     const createApartmentFunc = (data) => {
         dispatch(createApartment(data));
@@ -99,10 +95,6 @@ const Apartments = () => {
         dispatch(setPageNum(data));
     };
 
-    const setApartmentCreatingStateFunc = (data) => {
-        dispatch(setApartmentCreatingState(data));
-    };
-
     const setSuccessMessage = (data) => {
         dispatch(setSuccessMsg(data));
     };
@@ -116,8 +108,6 @@ const Apartments = () => {
             return { lat: data.latitude, lng: data.longitude };
         });
     };
-
-    console.log('>>>', pageNum, rowsPerPage);
 
     useEffect(() => {
         if (prevPageNum === undefined || prevPageNum < pageNum) {
@@ -137,8 +127,7 @@ const Apartments = () => {
                     readApartments={readApartmentsFunc}
                     pageNum={pageNum}
                     rowsPerPage={rowsPerPage}
-                    apartmentCreatingState={apartmentCreatingState}
-                    setApartmentCreatingStateFunc={setApartmentCreatingStateFunc}
+                    createSucceed={createSucceed}
                 />
             )}
             <Grid container spacing={4}>
@@ -155,7 +144,7 @@ const Apartments = () => {
                             readApartmentsFunc={readApartmentsFunc}
                             updateApartmentFunc={updateApartmentFunc}
                             deleteApartmentFunc={deleteApartmentFunc}
-                            apartmentDeletingState={apartmentDeletingState}
+                            deleteSucceed={deleteSucceed}
                             readingApartments={readingApartments}
                             deletingApartment={deletingApartment}
                             successMessage={successMsg}
