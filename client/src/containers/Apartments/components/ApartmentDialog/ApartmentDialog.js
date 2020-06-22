@@ -213,175 +213,173 @@ const ApartmentDialog = (props) => {
     };
 
     return (
-        <div>
-            <Dialog
-                open={open}
-                PaperProps={{ classes: { root: classes.dialogPaper } }}
-                aria-labelledby="max-width-dialog-title"
-                fullWidth={true}>
-                <DialogTitle id="max-width-dialog-title">{`${title} Apartment`}</DialogTitle>
-                <DialogContent dividers>
-                    <div className={classes.form} noValidate>
-                        <div className={classes.formControl}>
-                            <TextField
-                                label="name"
-                                placeholder="name"
-                                name="name"
-                                error={hasError('name')}
-                                value={fieldValue('name')}
-                                helperText={hasError('name') ? formState.errors.name[0] : null}
-                                classes={{ root: classes.normalText }}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div>
-                            <TextField
-                                label="description"
-                                multiline={true}
-                                placeholder="description"
-                                name="description"
-                                error={hasError('description')}
-                                helperText={hasError('description') ? formState.errors.description[0] : null}
-                                value={fieldValue('description')}
-                                classes={{ root: classes.normalText }}
-                                InputProps={{ classes: { input: classes.description } }}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className={classes.formControl}>
-                            <TextField
-                                label="Floor Area Size"
-                                name="floorAreaSize"
-                                id="floorAreaSize"
-                                error={hasError('floorAreaSize')}
-                                helperText={hasError('floorAreaSize') ? formState.errors.floorAreaSize[0] : null}
-                                value={fieldValue('floorAreaSize')}
-                                classes={{ root: classes.subArea1 }}
-                                InputProps={{ inputComponent: NumberFormatCustom }}
-                                onChange={handleChange}
-                            />
-                            <TextField
-                                label="Price Per Month"
-                                name="pricePerMonth"
-                                id="pricePerMonth"
-                                error={hasError('pricePerMonth')}
-                                helperText={hasError('pricePerMonth') ? formState.errors.pricePerMonth[0] : null}
-                                value={fieldValue('pricePerMonth')}
-                                classes={{ root: classes.subArea1 }}
-                                InputProps={{ inputComponent: NumberFormatCustom }}
-                                onChange={handleChange}
-                            />
-                            <TextField
-                                label="Number of rooms"
-                                name="numberOfRooms"
-                                id="numberOfRooms"
-                                error={hasError('numberOfRooms')}
-                                helperText={hasError('numberOfRooms') ? formState.errors.numberOfRooms[0] : null}
-                                value={fieldValue('numberOfRooms')}
-                                classes={{ root: classes.subArea1 }}
-                                InputProps={{ inputComponent: NumberFormatCustom }}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className={classes.formControl}>
-                            <TextField
-                                label="Address"
-                                name="address"
-                                id="address"
-                                error={hasError('address')}
-                                helperText={hasError('address') ? formState.errors.address[0] : null}
-                                value={fieldValue('address')}
-                                classes={{ root: classes.subArea2 }}
-                                disabled={formState.values.geoCodeType !== 'Address'}
-                                onChange={handleChange}
-                            />
-                            <div className={clsx(classes.formControl, classes.subArea2)}>
-                                <TextField
-                                    label="Latitude"
-                                    name="latitude"
-                                    id="latitude"
-                                    error={hasError('latitude')}
-                                    helperText={hasError('latitude') ? formState.errors.latitude[0] : null}
-                                    value={fieldValue('latitude')}
-                                    classes={{ root: classes.subArea2 }}
-                                    InputProps={{ inputComponent: NumberFormatCustom }}
-                                    disabled={formState.values.geoCodeType !== 'Geo code'}
-                                    onChange={handleChange}
-                                />
-                                <TextField
-                                    label="Longitude"
-                                    name="longitude"
-                                    id="longitude"
-                                    error={hasError('longitude')}
-                                    helperText={hasError('longitude') ? formState.errors.longitude[0] : null}
-                                    value={fieldValue('longitude')}
-                                    classes={{ root: classes.subArea2 }}
-                                    InputProps={{ inputComponent: NumberFormatCustom }}
-                                    disabled={formState.values.geoCodeType !== 'Geo code'}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                        </div>
-                        <RadioGroup
-                            defaultValue="Address"
-                            aria-label="geocode"
-                            name="geoCodeType"
-                            className={classes.formControl}
-                            onChange={handleChange}>
-                            <FormControlLabel value="Address" control={<Radio />} label="Address" className={classes.subArea2} />
-                            <FormControlLabel value="Geo code" control={<Radio />} label="Geo Code" className={classes.subArea2} />
-                        </RadioGroup>
-                        {geoCodeError && <div className={classes.formControl}>{geoCodeError}</div>}
-                        {title === 'Update' && (
-                            <div className={classes.formControl}>
-                                <span>Available State:</span>
-                                <NativeSelect
-                                    disableUnderline
-                                    id="available_state"
-                                    name="available_state"
-                                    onChange={handleChange}
-                                    className={classes.associated}
-                                    classes={{ root: classes.associatedInput }}
-                                    defaultValue={orgApartment.available_state}>
-                                    {['Available', 'Rented'].map((state, index) => (
-                                        <option value={state} key={`availableState-${index}`}>
-                                            {state}
-                                        </option>
-                                    ))}
-                                </NativeSelect>
-                            </div>
-                        )}
-                        {role === 'Administrator' && (
-                            <div className={classes.formControl}>
-                                <span>Associated Realtor:</span>
-                                <NativeSelect
-                                    disableUnderline
-                                    onChange={handleAssociatedRealtorChange}
-                                    id="associated_realtor"
-                                    name="associated_realtor"
-                                    className={classes.associated}
-                                    classes={{ root: classes.associatedInput }}
-                                    defaultValue={getAssociatedRealtorValue(orgApartment)}>
-                                    {realtors.map((realtor, index) => (
-                                        <option value={realtor.email} key={`realtor-${index}`}>
-                                            {getRealtorName(realtor)}
-                                        </option>
-                                    ))}
-                                </NativeSelect>
-                            </div>
-                        )}
+        <Dialog
+            open={open}
+            PaperProps={{ classes: { root: classes.dialogPaper } }}
+            aria-labelledby="max-width-dialog-title"
+            fullWidth={true}>
+            <DialogTitle id="max-width-dialog-title">{`${title} Apartment`}</DialogTitle>
+            <DialogContent dividers>
+                <div className={classes.form} noValidate>
+                    <div className={classes.formControl}>
+                        <TextField
+                            label="name"
+                            placeholder="name"
+                            name="name"
+                            error={hasError('name')}
+                            value={fieldValue('name')}
+                            helperText={hasError('name') ? formState.errors.name[0] : null}
+                            classes={{ root: classes.normalText }}
+                            onChange={handleChange}
+                        />
                     </div>
-                </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={handleSave} disabled={fetching} color="primary" variant="contained" startIcon={<SaveIcon />}>
-                        {title} {fetching && <CircularProgress size={20} />}
-                    </Button>
-                    <Button autoFocus onClick={() => setOpen(false)} disabled={fetching} variant="contained">
-                        Cancel
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+                    <div>
+                        <TextField
+                            label="description"
+                            multiline={true}
+                            placeholder="description"
+                            name="description"
+                            error={hasError('description')}
+                            helperText={hasError('description') ? formState.errors.description[0] : null}
+                            value={fieldValue('description')}
+                            classes={{ root: classes.normalText }}
+                            InputProps={{ classes: { input: classes.description } }}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className={classes.formControl}>
+                        <TextField
+                            label="Floor Area Size"
+                            name="floorAreaSize"
+                            id="floorAreaSize"
+                            error={hasError('floorAreaSize')}
+                            helperText={hasError('floorAreaSize') ? formState.errors.floorAreaSize[0] : null}
+                            value={fieldValue('floorAreaSize')}
+                            classes={{ root: classes.subArea1 }}
+                            InputProps={{ inputComponent: NumberFormatCustom }}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            label="Price Per Month"
+                            name="pricePerMonth"
+                            id="pricePerMonth"
+                            error={hasError('pricePerMonth')}
+                            helperText={hasError('pricePerMonth') ? formState.errors.pricePerMonth[0] : null}
+                            value={fieldValue('pricePerMonth')}
+                            classes={{ root: classes.subArea1 }}
+                            InputProps={{ inputComponent: NumberFormatCustom }}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            label="Number of rooms"
+                            name="numberOfRooms"
+                            id="numberOfRooms"
+                            error={hasError('numberOfRooms')}
+                            helperText={hasError('numberOfRooms') ? formState.errors.numberOfRooms[0] : null}
+                            value={fieldValue('numberOfRooms')}
+                            classes={{ root: classes.subArea1 }}
+                            InputProps={{ inputComponent: NumberFormatCustom }}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className={classes.formControl}>
+                        <TextField
+                            label="Address"
+                            name="address"
+                            id="address"
+                            error={hasError('address')}
+                            helperText={hasError('address') ? formState.errors.address[0] : null}
+                            value={fieldValue('address')}
+                            classes={{ root: classes.subArea2 }}
+                            disabled={formState.values.geoCodeType !== 'Address'}
+                            onChange={handleChange}
+                        />
+                        <div className={clsx(classes.formControl, classes.subArea2)}>
+                            <TextField
+                                label="Latitude"
+                                name="latitude"
+                                id="latitude"
+                                error={hasError('latitude')}
+                                helperText={hasError('latitude') ? formState.errors.latitude[0] : null}
+                                value={fieldValue('latitude')}
+                                classes={{ root: classes.subArea2 }}
+                                InputProps={{ inputComponent: NumberFormatCustom }}
+                                disabled={formState.values.geoCodeType !== 'Geo code'}
+                                onChange={handleChange}
+                            />
+                            <TextField
+                                label="Longitude"
+                                name="longitude"
+                                id="longitude"
+                                error={hasError('longitude')}
+                                helperText={hasError('longitude') ? formState.errors.longitude[0] : null}
+                                value={fieldValue('longitude')}
+                                classes={{ root: classes.subArea2 }}
+                                InputProps={{ inputComponent: NumberFormatCustom }}
+                                disabled={formState.values.geoCodeType !== 'Geo code'}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </div>
+                    <RadioGroup
+                        defaultValue="Address"
+                        aria-label="geocode"
+                        name="geoCodeType"
+                        className={classes.formControl}
+                        onChange={handleChange}>
+                        <FormControlLabel value="Address" control={<Radio />} label="Address" className={classes.subArea2} />
+                        <FormControlLabel value="Geo code" control={<Radio />} label="Geo Code" className={classes.subArea2} />
+                    </RadioGroup>
+                    {geoCodeError && <div className={classes.formControl}>{geoCodeError}</div>}
+                    {title === 'Update' && (
+                        <div className={classes.formControl}>
+                            <span>Available State:</span>
+                            <NativeSelect
+                                disableUnderline
+                                id="available_state"
+                                name="available_state"
+                                onChange={handleChange}
+                                className={classes.associated}
+                                classes={{ root: classes.associatedInput }}
+                                defaultValue={orgApartment.available_state}>
+                                {['Available', 'Rented'].map((state, index) => (
+                                    <option value={state} key={`availableState-${index}`}>
+                                        {state}
+                                    </option>
+                                ))}
+                            </NativeSelect>
+                        </div>
+                    )}
+                    {role === 'Administrator' && (
+                        <div className={classes.formControl}>
+                            <span>Associated Realtor:</span>
+                            <NativeSelect
+                                disableUnderline
+                                onChange={handleAssociatedRealtorChange}
+                                id="associated_realtor"
+                                name="associated_realtor"
+                                className={classes.associated}
+                                classes={{ root: classes.associatedInput }}
+                                defaultValue={getAssociatedRealtorValue(orgApartment)}>
+                                {realtors.map((realtor, index) => (
+                                    <option value={realtor.email} key={`realtor-${index}`}>
+                                        {getRealtorName(realtor)}
+                                    </option>
+                                ))}
+                            </NativeSelect>
+                        </div>
+                    )}
+                </div>
+            </DialogContent>
+            <DialogActions>
+                <Button autoFocus onClick={handleSave} disabled={fetching} color="primary" variant="contained" startIcon={<SaveIcon />}>
+                    {title} {fetching && <CircularProgress size={20} />}
+                </Button>
+                <Button autoFocus onClick={() => setOpen(false)} disabled={fetching} variant="contained">
+                    Cancel
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

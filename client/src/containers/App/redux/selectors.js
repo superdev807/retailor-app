@@ -18,7 +18,3 @@ export const makeSelectLogging = createSelector(selectGlobal, (globalState) => g
 export const makeSignUpLoading = createSelector(selectGlobal, (globalState) => globalState.signUpState === API_PENDING);
 
 export const makeSelectUserRole = createSelector(selectGlobal, (globalState) => globalState.authUser.role);
-
-export const makeSelectUsers = createSelector(selectGlobal, (globalState) => globalState.users);
-
-export const makeSelectRealtors = createSelector(selectGlobal, (globalState) => globalState.realtors);

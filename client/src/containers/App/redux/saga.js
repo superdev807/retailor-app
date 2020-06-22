@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga/effects';
 import apiCall from 'redux/api/call';
-import { LOG_IN_WITH_EMAIL_PASSWORD, SIGN_UP, GET_USER_INFO, GET_USERS } from './constants';
+import { LOG_IN_WITH_EMAIL_PASSWORD, SIGN_UP, GET_USER_INFO } from './constants';
 
 const login = apiCall({
     type: LOG_IN_WITH_EMAIL_PASSWORD,
@@ -20,15 +20,8 @@ const getUserInfo = apiCall({
     path: () => 'api/users/getUserInfo',
 });
 
-const getUsers = apiCall({
-    type: GET_USERS,
-    method: 'get',
-    path: () => 'api/users/allUsers',
-});
-
 export default function* rootSaga() {
     yield takeLatest(LOG_IN_WITH_EMAIL_PASSWORD, login);
     yield takeLatest(SIGN_UP, signUp);
     yield takeLatest(GET_USER_INFO, getUserInfo);
-    yield takeLatest(GET_USERS, getUsers);
 }

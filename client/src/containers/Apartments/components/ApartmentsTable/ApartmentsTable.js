@@ -22,7 +22,6 @@ import NormalDialog from 'components/NormalDialog';
 import Notification from 'components/Notification';
 import isValidApartment from 'utils/checkValidApartment';
 import { useStyles } from './styles';
-import { filter } from 'lodash';
 
 const ApartmentsTable = (props) => {
     const {
@@ -141,7 +140,7 @@ const ApartmentsTable = (props) => {
                                     <TableCell>Added date</TableCell>
                                     <TableCell>Current State</TableCell>
                                     <TableCell>Associated Realtor</TableCell>
-                                    {userRole !== 'client' && <TableCell>Action</TableCell>}
+                                    {userRole !== 'Client' && <TableCell>Action</TableCell>}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -161,7 +160,7 @@ const ApartmentsTable = (props) => {
                                             <TableCell className={classes.normalTableCell}>
                                                 {apartment.associated_realtor.userName}
                                             </TableCell>
-                                            {userRole !== 'client' && (
+                                            {userRole !== 'Client' && (
                                                 <TableCell className={classes.normalTableCell}>
                                                     <div className={classes.actionCell}>
                                                         <IconButton

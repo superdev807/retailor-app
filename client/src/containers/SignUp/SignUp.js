@@ -51,7 +51,7 @@ const SignUp = () => {
 
     const [formState, setFormState] = useState({
         isValid: false,
-        values: { role: 'ciient' },
+        values: { role: 'Client' },
         touched: {},
         errors: {},
     });
@@ -60,7 +60,7 @@ const SignUp = () => {
         if (isAuthenticated) {
             history.push('/apartment');
         }
-    }, []);
+    }, [isAuthenticated]);
 
     useEffect(() => {
         const errors = validate(formState.values, schema);

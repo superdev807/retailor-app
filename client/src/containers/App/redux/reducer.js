@@ -9,7 +9,6 @@ import {
     SET_AUTH_NOTIFICATION,
     LOG_OUT,
     GET_USER_INFO,
-    GET_USERS,
 } from './constants';
 
 export const initialState = {
@@ -61,10 +60,6 @@ const appReducer = (state = initialState, action) =>
                 break;
             case requestSuccess(GET_USER_INFO):
                 draft.authUser = action.payload.user;
-                break;
-            case requestSuccess(GET_USERS):
-                draft.users = action.payload;
-                draft.realtors = action.payload.filter((user) => user.role === 'Realtor');
                 break;
             case LOG_OUT:
                 deleteCookie('appToken', '/');

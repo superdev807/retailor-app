@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import Map from 'containers/Map';
-import { makeSelectAuthUser, makeSelectRealtors } from 'containers/App/redux/selectors';
+import { makeSelectAuthUser } from 'containers/App/redux/selectors';
+import { makeSelectRealtors } from 'containers/UserList/redux/selector';
 import {
     makeSelectCreatingApartment,
     makeSelectReadingApartment,

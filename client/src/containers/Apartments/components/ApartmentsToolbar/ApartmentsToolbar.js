@@ -57,13 +57,13 @@ const ApartmentsToolbar = (props) => {
             <div className={classes.row}>
                 <span className={classes.spacer} />
 
-                {role !== 'client' && (
+                {role !== 'Client' && (
                     <Button color="primary" variant="contained" onClick={handleClick}>
                         Add Apartment
                     </Button>
                 )}
 
-                {role !== 'client' && (
+                {role !== 'Client' && (
                     <ApartmentDialog
                         title={'Add'}
                         role={role}
