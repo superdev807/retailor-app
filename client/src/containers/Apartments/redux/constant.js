@@ -9,3 +9,4 @@ export const SET_APARTMENT_CREATING_STATE = 'Apartments/SET_APARTMENT_CREATING_S
 export const SET_APARTMENT_DELETING_STATE = 'Apartments/SET_APARTMENT_DELETING_STATE';
 export const SET_SUCCESS_MSG = 'Apartments/SET_SUCCESS_MSG';
 export const SET_FAILED_MSG = 'Apartments/SET_FAILED_MSG';
+export const SET_FILTER_VALUES = 'Apartments/SET_FILTER_VALUES';

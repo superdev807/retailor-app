@@ -16,6 +16,7 @@ import {
     makeSelectRowsPerPage,
     makeSelectSuccessMsg,
     makeSelectFailedMsg,
+    makeSelectFilterValues,
 } from './redux/selector';
 import { useDispatch, useSelector } from 'react-redux';
 import { ApartmentsToolbar, ApartmentsTable } from './components';
@@ -30,6 +31,7 @@ import {
     setPageNum,
     setSuccessMsg,
     setFailedMsg,
+    setFilterValues,
 } from './redux/actions';
 
 import ApartmentReducer from './redux/reducer';
@@ -72,6 +74,7 @@ const Apartments = () => {
     const successMsg = useSelector(makeSelectSuccessMsg);
     const failedMsg = useSelector(makeSelectFailedMsg);
     const realtors = useSelector(makeSelectRealtors);
+    const filterValues = useSelector(makeSelectFilterValues);
     const dispatch = useDispatch();
 
     const createApartmentFunc = (data) => {
@@ -106,6 +109,10 @@ const Apartments = () => {
         dispatch(setFailedMsg(data));
     };
 
+    const setFilterValuesFunc = (data) => {
+        dispatch(setFilterValues(data));
+    };
+
     const getLocations = (datas) => {
         return datas.map((data) => {
             return { lat: data.latitude, lng: data.longitude };
@@ -120,20 +127,20 @@ const Apartments = () => {
 
     return (
         <div className={classes.root}>
-            {authUser.role !== 'client' && (
-                <ApartmentsToolbar
-                    role={authUser.role}
-                    email={authUser.email}
-                    userName={authUser.firstName + ' ' + authUser.lastName}
-                    creatingApartment={creatingApartment}
-                    createApartment={createApartmentFunc}
-                    readApartments={readApartmentsFunc}
-                    pageNum={pageNum}
-                    rowsPerPage={rowsPerPage}
-                    createSucceed={createSucceed}
-                    realtors={realtors}
-                />
-            )}
+            <ApartmentsToolbar
+                role={authUser.role}
+                email={authUser.email}
+                userName={authUser.firstName + ' ' + authUser.lastName}
+                creatingApartment={creatingApartment}
+                createApartment={createApartmentFunc}
+                readApartments={readApartmentsFunc}
+                setFilterValuesFunc={setFilterValuesFunc}
+                pageNum={pageNum}
+                rowsPerPage={rowsPerPage}
+                createSucceed={createSucceed}
+                realtors={realtors}
+                filterValues={filterValues}
+            />
             <Grid container spacing={4}>
                 <Grid item lg={8} md={12} xl={9} xs={12}>
                     <div className={classes.content}>
@@ -158,6 +165,7 @@ const Apartments = () => {
                             setSuccessMessage={setSuccessMessage}
                             setFailedMessage={setFailedMessage}
                             realtors={realtors}
+                            filterValues={filterValues}
                         />
                     </div>
                 </Grid>

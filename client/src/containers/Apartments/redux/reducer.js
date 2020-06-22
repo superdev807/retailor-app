@@ -11,6 +11,7 @@ import {
     SET_APARTMENT_DELETING_STATE,
     SET_SUCCESS_MSG,
     SET_FAILED_MSG,
+    SET_FILTER_VALUES,
 } from './constant';
 
 export const initialState = {
@@ -26,6 +27,7 @@ export const initialState = {
     rowsPerPage: 5,
     successMsg: '',
     failedMsg: '',
+    filterValues: {},
 };
 
 const apartmentReducer = (state = initialState, action) =>
@@ -94,6 +96,9 @@ const apartmentReducer = (state = initialState, action) =>
                 break;
             case SET_FAILED_MSG:
                 draft.failedMsg = action.payload;
+                break;
+            case SET_FILTER_VALUES:
+                draft.filterValues = action.payload;
                 break;
             default:
                 break;

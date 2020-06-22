@@ -7,16 +7,8 @@ export default function NumberFormatCustom(props) {
     let prefix = '',
         suffix = '';
 
-    switch (name) {
-        case 'floorAreaSize':
-            suffix = ' m²';
-            break;
-        case 'pricePerMonth':
-            prefix = '$';
-            break;
-        default:
-            break;
-    }
+    if (name.includes('floorAreaSize')) suffix = ' m²';
+    else if (name.includes('pricePerMonth')) prefix = '$';
 
     return (
         <NumberFormat

@@ -20,7 +20,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ApartmentDialog from '../ApartmentDialog';
 import NormalDialog from 'components/NormalDialog';
 import Notification from 'components/Notification';
+import isValidApartment from 'utils/checkValidApartment';
 import { useStyles } from './styles';
+import { filter } from 'lodash';
 
 const ApartmentsTable = (props) => {
     const {
@@ -44,6 +46,7 @@ const ApartmentsTable = (props) => {
         deletingApartment,
         deleteSucceed,
         updateSucceed,
+        filterValues,
         realtors = [],
         ...rest
     } = props;
@@ -142,41 +145,45 @@ const ApartmentsTable = (props) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {apartments.slice(rowsPerPage * (pageNum - 1), rowsPerPage * pageNum).map((apartment, index) => (
-                                    <TableRow className={classes.tableRow} key={`apartment-${index}`}>
-                                        <TableCell className={classes.normalTableCell}>{apartment.name}</TableCell>
-                                        <TableCell className={classes.descriptionCell}>{apartment.description}</TableCell>
-                                        <TableCell className={classes.normalTableCell}>{apartment.pricePerMonth}</TableCell>
-                                        <TableCell className={classes.normalTableCell}>{apartment.floorAreaSize}</TableCell>
-                                        <TableCell className={classes.normalTableCell}>{apartment.numberOfRooms}</TableCell>
-                                        <TableCell className={classes.normalTableCell}>{apartment.address}</TableCell>
-                                        <TableCell className={classes.normalTableCell}>
-                                            {moment(apartment.date).format('DD/MM/YYYY')}
-                                        </TableCell>
-                                        <TableCell className={classes.normalTableCell}>{apartment.available_state}</TableCell>
-                                        <TableCell className={classes.normalTableCell}>{apartment.associated_realtor.userName}</TableCell>
-                                        {userRole !== 'client' && (
+                                {apartments.slice(rowsPerPage * (pageNum - 1), rowsPerPage * pageNum).map((apartment, index) =>
+                                    isValidApartment(filterValues, apartment) ? (
+                                        <TableRow className={classes.tableRow} key={`apartment-${index}`}>
+                                            <TableCell className={classes.normalTableCell}>{apartment.name}</TableCell>
+                                            <TableCell className={classes.descriptionCell}>{apartment.description}</TableCell>
+                                            <TableCell className={classes.normalTableCell}>{apartment.pricePerMonth}</TableCell>
+                                            <TableCell className={classes.normalTableCell}>{apartment.floorAreaSize}</TableCell>
+                                            <TableCell className={classes.normalTableCell}>{apartment.numberOfRooms}</TableCell>
+                                            <TableCell className={classes.normalTableCell}>{apartment.address}</TableCell>
                                             <TableCell className={classes.normalTableCell}>
-                                                <div className={classes.actionCell}>
-                                                    <IconButton
-                                                        aria-label="edit"
-                                                        size="small"
-                                                        onClick={openEditDlg(apartment)}
-                                                        disabled={!isEditable(apartment)}>
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                    <IconButton
-                                                        aria-label="edit"
-                                                        size="small"
-                                                        onClick={openRemoveDlg(apartment)}
-                                                        disabled={!isEditable(apartment)}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </div>
+                                                {moment(apartment.date).format('DD/MM/YYYY')}
                                             </TableCell>
-                                        )}
-                                    </TableRow>
-                                ))}
+                                            <TableCell className={classes.normalTableCell}>{apartment.available_state}</TableCell>
+                                            <TableCell className={classes.normalTableCell}>
+                                                {apartment.associated_realtor.userName}
+                                            </TableCell>
+                                            {userRole !== 'client' && (
+                                                <TableCell className={classes.normalTableCell}>
+                                                    <div className={classes.actionCell}>
+                                                        <IconButton
+                                                            aria-label="edit"
+                                                            size="small"
+                                                            onClick={openEditDlg(apartment)}
+                                                            disabled={!isEditable(apartment)}>
+                                                            <EditIcon />
+                                                        </IconButton>
+                                                        <IconButton
+                                                            aria-label="edit"
+                                                            size="small"
+                                                            onClick={openRemoveDlg(apartment)}
+                                                            disabled={!isEditable(apartment)}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </div>
+                                                </TableCell>
+                                            )}
+                                        </TableRow>
+                                    ) : null
+                                )}
                             </TableBody>
                         </Table>
                     </div>

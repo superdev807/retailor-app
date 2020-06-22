@@ -47,3 +47,5 @@ export const makeSelectTotalLimit = createSelector(selectGlobal, (globalState) =
 export const makeSelectSuccessMsg = createSelector(selectGlobal, (globalState) => globalState.successMsg);
 
 export const makeSelectFailedMsg = createSelector(selectGlobal, (globalState) => globalState.failedMsg);
+
+export const makeSelectFilterValues = createSelector(selectGlobal, (globalState) => globalState.filterValues);
