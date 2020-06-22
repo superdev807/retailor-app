@@ -36,7 +36,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     associated: {
         width: '70%',
-        border: '1px solid black',
+        borderBottom: '1px solid grey',
     },
     associatedInput: {
         paddingLeft: 20,

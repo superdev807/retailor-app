@@ -326,12 +326,33 @@ const ApartmentDialog = (props) => {
                             <FormControlLabel value="Geo code" control={<Radio />} label="Geo Code" className={classes.subArea2} />
                         </RadioGroup>
                         {geoCodeError && <div className={classes.formControl}>{geoCodeError}</div>}
+                        {title == 'Update' && (
+                            <div className={classes.formControl}>
+                                <span>Available State:</span>
+                                <NativeSelect
+                                    disableUnderline
+                                    id="available_state"
+                                    name="available_state"
+                                    onChange={handleChange}
+                                    className={classes.associated}
+                                    classes={{ root: classes.associatedInput }}
+                                    defaultValue={orgApartment && orgApartment.available_state}>
+                                    {['Available', 'Rented'].map((state, index) => (
+                                        <option value={state} key={`availableState-${index}`}>
+                                            {state}
+                                        </option>
+                                    ))}
+                                </NativeSelect>
+                            </div>
+                        )}
                         {role === 'Administrator' && (
                             <div className={classes.formControl}>
                                 <span>Associated Realtor:</span>
                                 <NativeSelect
                                     disableUnderline
                                     onChange={handleChange}
+                                    id="associated_realtor"
+                                    name="associated_realtor"
                                     className={classes.associated}
                                     classes={{ root: classes.associatedInput }}>
                                     <option value="realtor">{'Alex John'}</option>

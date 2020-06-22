@@ -58,7 +58,7 @@ exports.deleteApartment = (req, res) => {
             message: 'Invalid Request',
         });
     }
-    Apartment.findOneAndDelete({ _id: req.params.id })
+    Apartment.findByIdAndRemove(req.params.id)
         .then(() => {
             return res.json({ message: 'Apartment Deleted Successfully' });
         })
