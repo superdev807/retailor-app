@@ -64,7 +64,7 @@ const appReducer = (state = initialState, action) =>
             case LOG_OUT:
                 deleteCookie('appToken', '/');
                 deleteCookie('email', '/');
-                draft.isAuthenticated = false;
+                window.location.href = '/';
                 break;
             case SET_AUTH_ERROR:
                 draft.authError = action.payload;
