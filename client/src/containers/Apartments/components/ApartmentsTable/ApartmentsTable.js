@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ApartmentDialog from '../ApartmentDialog';
 import NormalDialog from 'components/NormalDialog';
 import Notification from 'components/Notification';
 import { useStyles } from './styles';
@@ -24,6 +25,7 @@ import { useStyles } from './styles';
 const ApartmentsTable = (props) => {
     const {
         className,
+        email,
         pageNum,
         pageCnt,
         apartments,
@@ -41,6 +43,7 @@ const ApartmentsTable = (props) => {
         readingApartments,
         deletingApartment,
         deleteSucceed,
+        updateSucceed,
         ...rest
     } = props;
 
@@ -54,8 +57,14 @@ const ApartmentsTable = (props) => {
         setRowCount(parseInt(event.target.value));
     };
 
+    const [editOpen, setEditOpen] = useState(false);
     const [removeDlgOpen, setRemoveDlgOpen] = useState(false);
     const [curApartment, setCurApartment] = useState({});
+
+    const openEditDlg = (apartment) => () => {
+        setEditOpen(true);
+        setCurApartment(apartment);
+    };
 
     const openRemoveDlg = (apartment) => () => {
         setRemoveDlgOpen(true);
@@ -85,11 +94,25 @@ const ApartmentsTable = (props) => {
         setSuccessMessage('');
     };
 
+    const getAssociatedInfo = (apartment) => {
+        const email = (apartment.associated_realtor && apartment.associated_realtor.email) || 'Invalid Realtor';
+        const userName = (apartment.associated_realtor && apartment.associated_realtor.userName) || 'Invalid Realtor';
+        return { email, userName };
+    };
+
+    const isEditable = (apartment) => {
+        if (!apartment.associated_realtor) return false;
+        if (userRole === 'Administrator') return true;
+        if (userRole === 'Realtor' && email === apartment.associated_realtor.email) return true;
+        return false;
+    };
+
     useEffect(() => {
         if (deleteSucceed) {
             if (pageCnt === (pageNum - 1) * rowsPerPage + 1) {
                 setPageNumber(pageNum - 1);
-            } else readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
+            }
+            readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
             handleRemoveClose();
         }
     }, [deleteSucceed]);
@@ -134,10 +157,18 @@ const ApartmentsTable = (props) => {
                                         {userRole !== 'client' && (
                                             <TableCell className={classes.normalTableCell}>
                                                 <div className={classes.actionCell}>
-                                                    <IconButton aria-label="edit" size="small">
+                                                    <IconButton
+                                                        aria-label="edit"
+                                                        size="small"
+                                                        onClick={openEditDlg(apartment)}
+                                                        disabled={!isEditable(apartment)}>
                                                         <EditIcon />
                                                     </IconButton>
-                                                    <IconButton aria-label="edit" size="small" onClick={openRemoveDlg(apartment)}>
+                                                    <IconButton
+                                                        aria-label="edit"
+                                                        size="small"
+                                                        onClick={openRemoveDlg(apartment)}
+                                                        disabled={!isEditable(apartment)}>
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </div>
@@ -166,6 +197,20 @@ const ApartmentsTable = (props) => {
                 handleAgreeAction={handleRemoveApartment}
                 handleCancelAction={handleRemoveClose}
                 processing={deletingApartment}
+            />
+            <ApartmentDialog
+                title={'Update'}
+                open={editOpen}
+                setOpen={setEditOpen}
+                role={userRole}
+                email={getAssociatedInfo(curApartment)['email']}
+                userName={getAssociatedInfo(curApartment)['userName']}
+                handleSaveAction={updateApartmentFunc}
+                pageNum={pageNum}
+                rowsPerPage={rowsPerPage}
+                readApartments={readApartmentsFunc}
+                actionSucceed={updateSucceed}
+                orgApartment={curApartment}
             />
         </Card>
     );

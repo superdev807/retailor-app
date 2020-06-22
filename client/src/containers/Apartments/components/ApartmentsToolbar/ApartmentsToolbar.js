@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/styles';
-import ApartmentsDialog from '../ApartmentDialog';
+import ApartmentDialog from '../ApartmentDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -38,11 +39,20 @@ const ApartmentsToolbar = (props) => {
 
     const classes = useStyles();
 
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
+    const [open, setOpen] = useState(false);
+
     return (
         <div {...rest} className={clsx(classes.root, className)}>
             <div className={classes.row}>
                 <span className={classes.spacer} />
-                <ApartmentsDialog
+                <Button color="primary" variant="contained" onClick={handleClick}>
+                    Add Apartment
+                </Button>
+                <ApartmentDialog
                     title={'Add'}
                     role={role}
                     email={email}
@@ -51,9 +61,10 @@ const ApartmentsToolbar = (props) => {
                     handleSaveAction={createApartment}
                     pageNum={pageNum}
                     rowsPerPage={rowsPerPage}
-                    apartmentCreatingState={apartmentCreatingState}
                     readApartments={readApartments}
                     actionSucceed={createSucceed}
+                    open={open}
+                    setOpen={setOpen}
                 />
             </div>
             <div className={classes.row}></div>

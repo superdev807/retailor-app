@@ -9,6 +9,7 @@ import {
     makeSelectDeletingApartment,
     makeSelectApartmentCreateSuccess,
     makeSelectApartmentDeleteSuccess,
+    makeSelectApartmentUpdateSuccess,
     makeSelectApartments,
     makeSelectPageNum,
     makeSelectTotalLimit,
@@ -67,6 +68,7 @@ const Apartments = () => {
     const rowsPerPage = useSelector(makeSelectRowsPerPage);
     const createSucceed = useSelector(makeSelectApartmentCreateSuccess);
     const deleteSucceed = useSelector(makeSelectApartmentDeleteSuccess);
+    const updateSucceed = useSelector(makeSelectApartmentUpdateSuccess);
     const successMsg = useSelector(makeSelectSuccessMsg);
     const failedMsg = useSelector(makeSelectFailedMsg);
     const dispatch = useDispatch();
@@ -134,6 +136,7 @@ const Apartments = () => {
                 <Grid item lg={8} md={12} xl={9} xs={12}>
                     <div className={classes.content}>
                         <ApartmentsTable
+                            email={authUser.email}
                             apartments={apartments}
                             pageNum={pageNum}
                             pageCnt={pageCnt}
@@ -145,6 +148,7 @@ const Apartments = () => {
                             updateApartmentFunc={updateApartmentFunc}
                             deleteApartmentFunc={deleteApartmentFunc}
                             deleteSucceed={deleteSucceed}
+                            updateSucceed={updateSucceed}
                             readingApartments={readingApartments}
                             deletingApartment={deletingApartment}
                             successMessage={successMsg}

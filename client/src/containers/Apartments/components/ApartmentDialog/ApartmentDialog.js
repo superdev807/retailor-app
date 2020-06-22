@@ -6,13 +6,27 @@ import { Button, Dialog, TextField, RadioGroup, FormControlLabel, Radio, NativeS
 import SaveIcon from '@material-ui/icons/Save';
 import clsx from 'clsx';
 import validate from 'validate.js';
+import isEmpty from 'lodash/isEmpty';
 import { schema, addressSchema, geoCodeSchema } from './schema';
 import { useStyles } from './styles';
 
 const ApartmentDialog = (props) => {
     const classes = useStyles();
-    const [open, setOpen] = useState(false);
-    const { title, role, email, userName, fetching, handleSaveAction, pageNum, rowsPerPage, readApartments, actionSucceed } = props;
+    const {
+        title,
+        role,
+        email,
+        userName,
+        fetching,
+        handleSaveAction,
+        pageNum,
+        rowsPerPage,
+        readApartments,
+        actionSucceed,
+        orgApartment,
+        open = false,
+        setOpen,
+    } = props;
     const [geoCodeError, setGeoCodeError] = useState('');
 
     const [formState, setFormState] = useState({
@@ -29,20 +43,62 @@ const ApartmentDialog = (props) => {
 
     useEffect(() => {
         if (open) {
-            setFormState({
-                isValid: false,
-                values: { geoCodeType: 'Address' },
-                touched: {},
-                errors: {},
-            });
+            if (!orgApartment || isEmpty(orgApartment)) {
+                setFormState({
+                    isValid: false,
+                    values: { geoCodeType: 'Address' },
+                    touched: {},
+                    errors: {},
+                });
+            } else {
+                const {
+                    name,
+                    description,
+                    floorAreaSize,
+                    pricePerMonth,
+                    numberOfRooms,
+                    address,
+                    latitude,
+                    longitude,
+                    available_state,
+                    associated_realtor,
+                } = orgApartment;
+                setFormState({
+                    isValid: false,
+                    values: {
+                        geoCodeType: 'Address',
+                        name,
+                        description,
+                        floorAreaSize,
+                        pricePerMonth,
+                        numberOfRooms,
+                        address,
+                        latitude,
+                        longitude,
+                        available_state,
+                        associated_realtor,
+                    },
+                    touched: {
+                        name: true,
+                        description: true,
+                        floorAreaSize: true,
+                        pricePerMonth: true,
+                        numberOfRooms: true,
+                        address: true,
+                        latitude: true,
+                        longitude: true,
+                    },
+                    errors: {},
+                });
+            }
             setGeoCodeError('');
         }
-    }, [open]);
+    }, [open, orgApartment]);
 
     useEffect(() => {
         if (actionSucceed) {
             readApartments({ pageNum, pageLimit: rowsPerPage });
-            handleClick();
+            setOpen(false);
         }
     }, [actionSucceed]);
 
@@ -59,10 +115,6 @@ const ApartmentDialog = (props) => {
     const hasError = (field) => (formState.touched[field] && formState.errors[field] ? true : false);
 
     const fieldValue = (field) => (formState.values[field] ? formState.values[field] : '');
-
-    const handleClick = () => {
-        setOpen(!open);
-    };
 
     const handleSave = () => {
         const geoSchema = formState.values['geoCodeType'] === 'Address' ? addressSchema : geoCodeSchema;
@@ -87,7 +139,7 @@ const ApartmentDialog = (props) => {
         });
         if (errors) return;
 
-        if (formState.values['geoCodeType'] === 'Address') {
+        if (formState.values['geoCodeType'] === 'Address' && (!orgApartment || orgApartment.address !== formState.values['address'])) {
             Geocode.fromAddress(formState.values['address']).then(
                 (response) => {
                     const { lat, lng } = response.results[0].geometry.location;
@@ -101,14 +153,19 @@ const ApartmentDialog = (props) => {
                         },
                     }));
                     const { geoCodeType, ...rest } = { ...formState.values, latitude: lat, longitude: lng };
-                    handleSaveAction({ data: { ...rest, associated_realtor: { email, userName } } });
+                    handleSaveAction({ data: { ...orgApartment, ...rest, associated_realtor: { email, userName } } });
                 },
                 (error) => {
                     console.log('invalid address');
                     setGeoCodeError('Invalid Address');
                 }
             );
-        } else {
+        } else if (
+            formState.values['geoCodeType'] === 'Geo code' &&
+            (!orgApartment ||
+                orgApartment.latitude !== formState.values['latitude'] ||
+                orgApartment.longitude !== formState.values['longitude'])
+        ) {
             Geocode.fromLatLng(formState.values['latitude'], formState.values['longitude']).then(
                 (response) => {
                     const address = response.results[0].formatted_address;
@@ -121,13 +178,16 @@ const ApartmentDialog = (props) => {
                         },
                     }));
                     const { geoCodeType, ...rest } = { ...formState.values, address };
-                    handleSaveAction({ data: { ...rest, associated_realtor: { email, userName } } });
+                    handleSaveAction({ data: { ...orgApartment, ...rest, associated_realtor: { email, userName } } });
                 },
                 (error) => {
                     console.log('invalid lat or longitute');
                     setGeoCodeError('Invalid latitude or longitute');
                 }
             );
+        } else {
+            const { geoCodeType, ...rest } = { ...formState.values };
+            handleSaveAction({ data: { ...orgApartment, ...rest, associated_realtor: { email, userName } } });
         }
     };
 
@@ -148,9 +208,6 @@ const ApartmentDialog = (props) => {
 
     return (
         <div>
-            <Button color="primary" variant="contained" onClick={handleClick}>
-                {`${title} Apartment`}
-            </Button>
             <Dialog
                 open={open}
                 PaperProps={{ classes: { root: classes.dialogPaper } }}
@@ -289,7 +346,7 @@ const ApartmentDialog = (props) => {
                     <Button autoFocus onClick={handleSave} disabled={fetching} color="primary" variant="contained" startIcon={<SaveIcon />}>
                         {title} {fetching && <CircularProgress size={20} />}
                     </Button>
-                    <Button autoFocus onClick={handleClick} disabled={fetching} variant="contained">
+                    <Button autoFocus onClick={() => setOpen(false)} disabled={fetching} variant="contained">
                         Cancel
                     </Button>
                 </DialogActions>

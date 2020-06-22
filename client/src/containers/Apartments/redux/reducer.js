@@ -18,6 +18,7 @@ export const initialState = {
     apartmentCreating: 'initialized',
     apartmentsReading: 'initialized',
     apartmentDeleteing: 'initialized',
+    apartmentUpdating: 'initialized',
     apartments: [],
     totalLimit: 0,
     pageCount: 1,
@@ -64,6 +65,15 @@ const apartmentReducer = (state = initialState, action) =>
             case requestFail(DELETE_APARTMENT):
                 draft.apartmentDeleteing = API_FAIL;
                 draft.failedMsg = 'Delete failed';
+                break;
+            case requestPending(UPDATE_APARTMENT):
+                draft.apartmentUpdating = API_PENDING;
+                break;
+            case requestFail(UPDATE_APARTMENT):
+                draft.apartmentUpdating = API_FAIL;
+                break;
+            case requestSuccess(UPDATE_APARTMENT):
+                draft.apartmentUpdating = API_SUCCESS;
                 break;
             case SET_PAGE_NUM:
                 if (action.payload <= draft.totalLimit) {

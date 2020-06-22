@@ -35,6 +35,13 @@ export const makeSelectDeletingApartment = createSelector(selectGlobal, (globalS
 
 export const makeSelectApartmentDeletingState = createSelector(selectGlobal, (globalState) => globalState.apartmentDeleteing);
 
+export const makeSelectApartmentUpdateSuccess = createSelector(
+    selectGlobal,
+    (globalState) => globalState.apartmentUpdating === API_SUCCESS
+);
+
+export const makeSelectUpdatingApartment = createSelector(selectGlobal, (globalState) => globalState.apartmentUpdating === API_PENDING);
+
 export const makeSelectTotalLimit = createSelector(selectGlobal, (globalState) => globalState.totalLimit);
 
 export const makeSelectSuccessMsg = createSelector(selectGlobal, (globalState) => globalState.successMsg);

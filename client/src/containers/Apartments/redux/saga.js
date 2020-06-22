@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga/effects';
 import apiCall from 'redux/api/call';
-import { CREATE_APARTMENT, READ_APARTMENTS, DELETE_APARTMENT } from './constant';
+import { CREATE_APARTMENT, READ_APARTMENTS, DELETE_APARTMENT, UPDATE_APARTMENT } from './constant';
 
 const createApartment = apiCall({
     type: CREATE_APARTMENT,
@@ -17,11 +17,21 @@ const readApartments = apiCall({
 const deleteApartment = apiCall({
     type: DELETE_APARTMENT,
     method: 'delete',
-    path: () => 'api/apartments/delete',
+    path: ({ payload }) => `api/apartments/delete/${payload.data.id}`,
+});
+
+const updateApartment = apiCall({
+    type: UPDATE_APARTMENT,
+    method: 'put',
+    path: ({ payload }) => {
+        console.log('<<<', payload);
+        return `api/apartments/update/${payload.data._id}`;
+    },
 });
 
 export default function* rootSaga() {
     yield takeLatest(CREATE_APARTMENT, createApartment);
     yield takeLatest(READ_APARTMENTS, readApartments);
     yield takeLatest(DELETE_APARTMENT, deleteApartment);
+    yield takeLatest(UPDATE_APARTMENT, updateApartment);
 }
