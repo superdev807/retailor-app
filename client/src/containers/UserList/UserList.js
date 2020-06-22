@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { UsersToolbar, UsersTable } from './components';
 import { makeSelectAuthUser } from 'containers/App/redux/selectors';
 import {
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const UserList = () => {
     const classes = useStyles();
+    const history = useHistory();
     const authUser = useSelector(makeSelectAuthUser);
     const users = useSelector(makeSelectUsers);
     const createSuccess = useSelector(makeSelectCreateSuccess);
@@ -42,6 +44,12 @@ const UserList = () => {
     useEffect(() => {
         reloadUsers();
     }, [reloadUsers]);
+
+    useEffect(() => {
+        if (authUser.role !== 'Administrator') {
+            history.push('/apartment');
+        }
+    }, [authUser.role]);
 
     const createUserFunc = (data) => {
         dispatch(createUser(data));
