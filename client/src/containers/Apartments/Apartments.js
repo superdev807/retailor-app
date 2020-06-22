@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import Map from 'containers/Map';
@@ -82,9 +82,12 @@ const Apartments = () => {
         dispatch(createApartment(data));
     };
 
-    const readApartmentsFunc = (data) => {
-        dispatch(readApartments({ data }));
-    };
+    const readApartmentsFunc = useCallback(
+        (data) => {
+            dispatch(readApartments({ data }));
+        },
+        [dispatch]
+    );
 
     const updateApartmentFunc = (data) => {
         dispatch(updateApartment(data));
@@ -124,7 +127,7 @@ const Apartments = () => {
         if ((prevPageNum === undefined || prevPageNum < pageNum) && (pageCnt > (pageNum - 1) * rowsPerPage || !pageCnt)) {
             readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
         }
-    }, [pageNum, rowsPerPage, pageCnt]);
+    }, [pageNum, rowsPerPage, pageCnt, prevPageNum, readApartmentsFunc]);
 
     return (
         <div className={classes.root}>

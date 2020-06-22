@@ -37,7 +37,7 @@ const useInjectReducer = ({ key, reducer }) => {
     const context = useContext(ReactReduxContext);
     useEffect(() => {
         getInjectors(context.store).injectReducer(key, reducer);
-    }, []);
+    }, [context.store, key, reducer]);
 };
 
 export { useInjectReducer };

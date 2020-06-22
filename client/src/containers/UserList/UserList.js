@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { UsersToolbar, UsersTable } from './components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -33,9 +33,13 @@ const UserList = () => {
     const deletePending = useSelector(makeSelectDeletePending);
     const dispatch = useDispatch();
 
+    const reloadUsers = useCallback(() => {
+        dispatch(getUsers());
+    }, [dispatch]);
+
     useEffect(() => {
         reloadUsers();
-    }, []);
+    }, [reloadUsers]);
 
     const createUserFunc = (data) => {
         dispatch(createUser(data));
@@ -47,10 +51,6 @@ const UserList = () => {
 
     const deleteUserFunc = (data) => {
         dispatch(deleteUser(data));
-    };
-
-    const reloadUsers = () => {
-        dispatch(getUsers());
     };
 
     return (

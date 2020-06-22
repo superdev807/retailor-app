@@ -35,7 +35,8 @@ const schema = {
     password: {
         presence: { allowEmpty: false, message: 'is required' },
         length: {
-            maximum: 128,
+            minimum: 6,
+            maximum: 30,
         },
     },
 };
@@ -60,7 +61,7 @@ const SignUp = () => {
         if (isAuthenticated) {
             history.push('/apartment');
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, history]);
 
     useEffect(() => {
         const errors = validate(formState.values, schema);

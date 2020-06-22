@@ -10,5 +10,9 @@ export const schema = {
     },
     password: {
         presence: { allowEmpty: false, message: 'is required' },
+        length: {
+            minimum: 6,
+            maximum: 30,
+        },
     },
 };

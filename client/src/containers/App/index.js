@@ -38,13 +38,13 @@ export default function App() {
                 })
             );
         }
-    }, [isAuthenticated, authUser]);
+    }, [isAuthenticated, authUser, dispatch, appToken, email]);
 
     useEffect(() => {
         if (appToken && !isEmpty(authUser)) {
             dispatch(getUsers());
         }
-    }, [isAuthenticated, authUser]);
+    }, [isAuthenticated, authUser, dispatch, appToken]);
 
     return (
         <Switch>

@@ -44,7 +44,7 @@ const SignIn = () => {
         if (isAuthenticated) {
             history.push('/apartment');
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, history]);
 
     useEffect(() => {
         const errors = validate(formState.values, schema);

@@ -82,7 +82,7 @@ const ApartmentDialog = (props) => {
             readApartments({ pageNum, pageLimit: rowsPerPage });
             setOpen(false);
         }
-    }, [actionSucceed]);
+    }, [actionSucceed, readApartments, pageNum, rowsPerPage, setOpen]);
 
     useEffect(() => {
         const errors = validate(formState.values, schema);
@@ -254,7 +254,7 @@ const ApartmentDialog = (props) => {
                             helperText={hasError('floorAreaSize') ? formState.errors.floorAreaSize[0] : null}
                             value={fieldValue('floorAreaSize')}
                             classes={{ root: classes.subArea1 }}
-                            InputProps={{ inputComponent: NumberFormatCustom }}
+                            InputProps={{ inputComponent: NumberFormatCustom, inputProps: { min: 0, max: 10 } }}
                             onChange={handleChange}
                         />
                         <TextField

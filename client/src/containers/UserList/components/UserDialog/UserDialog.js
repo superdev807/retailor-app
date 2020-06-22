@@ -48,7 +48,7 @@ const UserDialog = (props) => {
         if (actionSucceed) {
             setOpen(false);
         }
-    }, [actionSucceed]);
+    }, [actionSucceed, setOpen]);
 
     const handleChange = (event) => {
         event.persist && event.persist();

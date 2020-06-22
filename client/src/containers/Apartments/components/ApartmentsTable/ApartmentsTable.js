@@ -63,7 +63,7 @@ const ApartmentsTable = (props) => {
     const handleRowsPerPageChange = (event) => {
         const newRowVal = parseInt(event.target.value);
         let newPageNum = pageNum;
-        while (newRowVal * (newPageNum - 1) > pageCnt) newPageNum--;
+        while (newRowVal * (newPageNum - 1) >= pageCnt) newPageNum--;
         setPageNumber(newPageNum);
         setRowCount(newRowVal);
     };
@@ -122,7 +122,7 @@ const ApartmentsTable = (props) => {
             readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
             handleRemoveClose();
         }
-    }, [deleteSucceed]);
+    }, [deleteSucceed, pageCnt, pageNum, rowsPerPage, setPageNumber, readApartmentsFunc]);
 
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
