@@ -10,6 +10,7 @@ import {
     SET_SUCCESS_MSG,
     SET_FAILED_MSG,
     SET_FILTER_VALUES,
+    SET_INIT_LOADING_STATE,
 } from './constant';
 
 export function createApartment(payload) {
@@ -86,5 +87,11 @@ export function setFilterValues(payload) {
     return {
         type: SET_FILTER_VALUES,
         payload,
+    };
+}
+
+export function setInitLoadingState() {
+    return {
+        type: SET_INIT_LOADING_STATE,
     };
 }

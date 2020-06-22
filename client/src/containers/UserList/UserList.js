@@ -1,7 +1,8 @@
 import React, { useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { UsersToolbar, UsersTable } from './components';
 import { useSelector, useDispatch } from 'react-redux';
+import { UsersToolbar, UsersTable } from './components';
+import { makeSelectAuthUser } from 'containers/App/redux/selectors';
 import {
     makeSelectUsers,
     makeSelectCreateSuccess,
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 const UserList = () => {
     const classes = useStyles();
+    const authUser = useSelector(makeSelectAuthUser);
     const users = useSelector(makeSelectUsers);
     const createSuccess = useSelector(makeSelectCreateSuccess);
     const createPending = useSelector(makeSelectCreatePending);
@@ -58,6 +60,7 @@ const UserList = () => {
             <UsersToolbar createUserFunc={createUserFunc} createSuccess={createSuccess} createPending={createPending} />
             <div className={classes.content}>
                 <UsersTable
+                    me={authUser}
                     users={users}
                     updateUserFunc={updateUserFunc}
                     deleteUserFunc={deleteUserFunc}

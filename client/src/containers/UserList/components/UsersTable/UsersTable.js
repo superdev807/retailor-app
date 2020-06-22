@@ -34,7 +34,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UsersTable = (props) => {
-    const { className, users, updateUserFunc, deleteUserFunc, updateSuccess, updatePending, deleteSuccess, deletePending, ...rest } = props;
+    const {
+        className,
+        users,
+        updateUserFunc,
+        deleteUserFunc,
+        updateSuccess,
+        updatePending,
+        deleteSuccess,
+        deletePending,
+        me,
+        ...rest
+    } = props;
 
     const [curUser, setCurUser] = useState({});
     const [editOpen, setEditOpen] = useState(false);
@@ -64,6 +75,10 @@ const UsersTable = (props) => {
     const handleRemoveClose = () => {
         setRemoveDlgOpen(false);
         setCurUser({});
+    };
+
+    const isEditable = (user) => {
+        return user.email === me.email;
     };
 
     return (
@@ -99,10 +114,18 @@ const UsersTable = (props) => {
                                         <TableCell>{moment(user.createdAt).format('DD/MM/YYYY')}</TableCell>
                                         <TableCell>
                                             <div className={classes.actionCell}>
-                                                <IconButton aria-label="edit" size="small" onClick={openEditDlg(user)}>
+                                                <IconButton
+                                                    aria-label="edit"
+                                                    size="small"
+                                                    onClick={openEditDlg(user)}
+                                                    disabled={isEditable(user)}>
                                                     <EditIcon />
                                                 </IconButton>
-                                                <IconButton aria-label="edit" size="small" onClick={openRemoveDlg(user)}>
+                                                <IconButton
+                                                    aria-label="edit"
+                                                    size="small"
+                                                    onClick={openRemoveDlg(user)}
+                                                    disabled={isEditable(user)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </div>

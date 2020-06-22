@@ -33,6 +33,7 @@ import {
     setSuccessMsg,
     setFailedMsg,
     setFilterValues,
+    setInitLoadingState,
 } from './redux/actions';
 
 import ApartmentReducer from './redux/reducer';
@@ -117,6 +118,10 @@ const Apartments = () => {
         dispatch(setFilterValues(data));
     };
 
+    const setInitLoadingStateFunc = () => {
+        dispatch(setInitLoadingState());
+    };
+
     const getLocations = (datas) => {
         return datas.map((data) => {
             return { lat: data.latitude, lng: data.longitude };
@@ -170,6 +175,7 @@ const Apartments = () => {
                             setFailedMessage={setFailedMessage}
                             realtors={realtors}
                             filterValues={filterValues}
+                            setInitLoadingStateFunc={setInitLoadingStateFunc}
                         />
                     </div>
                 </Grid>

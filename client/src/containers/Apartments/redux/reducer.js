@@ -12,6 +12,7 @@ import {
     SET_SUCCESS_MSG,
     SET_FAILED_MSG,
     SET_FILTER_VALUES,
+    SET_INIT_LOADING_STATE,
 } from './constant';
 
 export const initialState = {
@@ -99,6 +100,12 @@ const apartmentReducer = (state = initialState, action) =>
                 break;
             case SET_FILTER_VALUES:
                 draft.filterValues = action.payload;
+                break;
+            case SET_INIT_LOADING_STATE:
+                draft.apartmentCreating = 'initialized';
+                draft.apartmentsReading = 'initialized';
+                draft.apartmentDeleteing = 'initialized';
+                draft.apartmentUpdating = 'initialized';
                 break;
             default:
                 break;

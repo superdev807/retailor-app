@@ -47,6 +47,7 @@ const ApartmentsTable = (props) => {
         updateSucceed,
         filterValues,
         realtors = [],
+        setInitLoadingStateFunc,
         ...rest
     } = props;
 
@@ -121,8 +122,9 @@ const ApartmentsTable = (props) => {
             }
             readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
             handleRemoveClose();
+            setInitLoadingStateFunc();
         }
-    }, [deleteSucceed, pageCnt, pageNum, rowsPerPage, setPageNumber, readApartmentsFunc]);
+    }, [deleteSucceed, pageCnt, pageNum, rowsPerPage, setPageNumber, readApartmentsFunc, setInitLoadingStateFunc]);
 
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
