@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserDialog from '../UserDialog';
 import NormalDialog from 'components/NormalDialog';
 import moment from 'moment';
@@ -34,13 +34,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UsersTable = (props) => {
-    const { className, users, updateUserFunc, deleteUserFunc, ...rest } = props;
+    const { className, users, updateUserFunc, deleteUserFunc, updateSuccess, updatePending, deleteSuccess, deletePending, ...rest } = props;
 
     const [curUser, setCurUser] = useState({});
     const [editOpen, setEditOpen] = useState(false);
     const [removeDlgOpen, setRemoveDlgOpen] = useState(false);
 
     const classes = useStyles();
+
+    useEffect(() => {
+        if (deleteSuccess || !deletePending) setRemoveDlgOpen(false);
+    }, [deleteSuccess, deletePending]);
 
     const openEditDlg = (user) => () => {
         setCurUser(user);
@@ -53,6 +57,7 @@ const UsersTable = (props) => {
     };
 
     const handleRemoveUser = () => {
+        deleteUserFunc({ data: curUser });
         // deleteApartmentFunc({ data: { id: curApartment._id } });
     };
 
@@ -109,8 +114,22 @@ const UsersTable = (props) => {
                     </div>
                 </PerfectScrollbar>
             </CardContent>
-            <UserDialog open={editOpen} setOpen={setEditOpen} title={'Update'} curUser={curUser} />
-            <NormalDialog open={removeDlgOpen} handleAgreeAction={handleRemoveUser} handleCancelAction={handleRemoveClose} title={'user'} />
+            <UserDialog
+                open={editOpen}
+                setOpen={setEditOpen}
+                title={'Update'}
+                curUser={curUser}
+                handleSaveAction={updateUserFunc}
+                actionSucceed={updateSuccess}
+                actionPending={updatePending}
+            />
+            <NormalDialog
+                open={removeDlgOpen}
+                handleAgreeAction={handleRemoveUser}
+                handleCancelAction={handleRemoveClose}
+                title={'user'}
+                processing={deletePending}
+            />
         </Card>
     );
 };

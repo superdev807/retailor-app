@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, getUserInfo, getAllUsers } = require('../../controllers/user-controller');
+const { checkAccessToken } = require('../../middlewares/check-token-permission');
+const { registerUser, loginUser, getUserInfo, getAllUsers, deleteUser, updateUser } = require('../../controllers/user-controller');
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/getUserInfo', getUserInfo);
 router.get('/allUsers', getAllUsers);
+router.post('/create', checkAccessToken, registerUser);
+router.delete('/delete/:id', checkAccessToken, deleteUser);
+router.put('/update/:id', checkAccessToken, updateUser);
 
 module.exports = router;

@@ -20,14 +20,14 @@ const ApartmentFilter = (props) => {
                     <TextField
                         name="floorAreaSizeMin"
                         id="floorAreaSizeMin"
-                        InputProps={{ inputComponent: NumberFormatCustom }}
+                        InputProps={{ inputComponent: NumberFormatCustom, classes: { input: classes.textField } }}
                         onChange={handleChange}
                     />
                     ~
                     <TextField
                         name="floorAreaSizeMax"
                         id="floorAreaSizeMax"
-                        InputProps={{ inputComponent: NumberFormatCustom }}
+                        InputProps={{ inputComponent: NumberFormatCustom, classes: { input: classes.textField } }}
                         onChange={handleChange}
                     />
                 </div>
@@ -38,14 +38,14 @@ const ApartmentFilter = (props) => {
                     <TextField
                         name="pricePerMonthMin"
                         id="pricePerMonthin"
-                        InputProps={{ inputComponent: NumberFormatCustom }}
+                        InputProps={{ inputComponent: NumberFormatCustom, classes: { input: classes.textField } }}
                         onChange={handleChange}
                     />
                     ~
                     <TextField
                         name="pricePerMonthMax"
                         id="pricePerMonthMax"
-                        InputProps={{ inputComponent: NumberFormatCustom }}
+                        InputProps={{ inputComponent: NumberFormatCustom, classes: { input: classes.textField } }}
                         onChange={handleChange}
                     />
                 </div>
@@ -56,14 +56,14 @@ const ApartmentFilter = (props) => {
                     <TextField
                         name="numberOfRoomsMin"
                         id="numberOfRoomsMin"
-                        InputProps={{ inputComponent: NumberFormatCustom }}
+                        InputProps={{ inputComponent: NumberFormatCustom, classes: { input: classes.textField } }}
                         onChange={handleChange}
                     />
                     ~
                     <TextField
                         name="numberOfRoomsMax"
                         id="numberOfRoomsMax"
-                        InputProps={{ inputComponent: NumberFormatCustom }}
+                        InputProps={{ inputComponent: NumberFormatCustom, classes: { input: classes.textField } }}
                         onChange={handleChange}
                     />
                 </div>

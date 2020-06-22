@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { UsersToolbar, UsersTable } from './components';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeSelectUsers } from './redux/selector';
+import {
+    makeSelectUsers,
+    makeSelectCreateSuccess,
+    makeSelectCreatePending,
+    makeSelectUpdateSuccess,
+    makeSelectUpdatePending,
+    makeSelectDeleteSuccess,
+    makeSelectDeletePending,
+} from './redux/selector';
 import { createUser, updateUser, deleteUser, getUsers } from './redux/actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +25,17 @@ const useStyles = makeStyles((theme) => ({
 const UserList = () => {
     const classes = useStyles();
     const users = useSelector(makeSelectUsers);
+    const createSuccess = useSelector(makeSelectCreateSuccess);
+    const createPending = useSelector(makeSelectCreatePending);
+    const updateSuccess = useSelector(makeSelectUpdateSuccess);
+    const updatePending = useSelector(makeSelectUpdatePending);
+    const deleteSuccess = useSelector(makeSelectDeleteSuccess);
+    const deletePending = useSelector(makeSelectDeletePending);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        reloadUsers();
+    }, []);
 
     const createUserFunc = (data) => {
         dispatch(createUser(data));
@@ -28,14 +46,26 @@ const UserList = () => {
     };
 
     const deleteUserFunc = (data) => {
-        dispatch(deleteUserFunc(data));
+        dispatch(deleteUser(data));
+    };
+
+    const reloadUsers = () => {
+        dispatch(getUsers());
     };
 
     return (
         <div className={classes.root}>
-            <UsersToolbar createUserFunc={createUserFunc} />
+            <UsersToolbar createUserFunc={createUserFunc} createSuccess={createSuccess} createPending={createPending} />
             <div className={classes.content}>
-                <UsersTable users={users} updateUserFunc={updateUserFunc} deleteUserFunc={deleteUserFunc} />
+                <UsersTable
+                    users={users}
+                    updateUserFunc={updateUserFunc}
+                    deleteUserFunc={deleteUserFunc}
+                    updateSuccess={updateSuccess}
+                    updatePending={updatePending}
+                    deleteSuccess={deleteSuccess}
+                    deletePending={deletePending}
+                />
             </div>
         </div>
     );

@@ -22,4 +22,7 @@ export const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
     },
+    textField: {
+        textAlign: 'center',
+    },
 }));

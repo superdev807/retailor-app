@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UsersToolbar = (props) => {
-    const { className, createUserFunc, ...rest } = props;
+    const { className, createUserFunc, createSuccess, createPending, ...rest } = props;
 
     const classes = useStyles();
 
@@ -45,7 +45,15 @@ const UsersToolbar = (props) => {
                 <Button color="primary" variant="contained" onClick={handleClick}>
                     Add user
                 </Button>
-                <UserDialog open={open} setOpen={setOpen} title={'Add'} curUser={{}} handleSaveAction={createUserFunc} />
+                <UserDialog
+                    open={open}
+                    setOpen={setOpen}
+                    title={'Add'}
+                    curUser={{}}
+                    handleSaveAction={createUserFunc}
+                    actionSucceed={createSuccess}
+                    actionPending={createPending}
+                />
             </div>
         </div>
     );

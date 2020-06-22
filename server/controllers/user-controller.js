@@ -101,11 +101,72 @@ exports.getUserInfo = (req, res) => {
 exports.getAllUsers = (req, res) => {
     User.find({})
         .then((result) => {
-            console.log('**', result);
             return res.json(result);
         })
         .catch((err) => {
             console.log(err);
-            return res.status(500).send({ message: err.message || 'Error occurred while reading the apartments.' });
+            return res.status(500).send({ message: err.message || 'Error occurred while reading the users.' });
         });
+};
+
+exports.deleteUser = (req, res) => {
+    if (!req.params.id) {
+        console.log('400 response');
+        return res.status(400).send({
+            message: 'Invalid Request',
+        });
+    }
+    User.findByIdAndRemove(req.params.id)
+        .then(() => {
+            return res.json(req.body);
+        })
+        .catch((err) => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: 'Not found with id ' + req.params.id,
+                });
+            }
+            return res.status(500).send({
+                message: 'Error deleting user with id ' + req.params.id,
+            });
+        });
+};
+
+exports.updateUser = (req, res) => {
+    if (!req.params.id) {
+        console.log('400 response');
+        return res.status(400).send({
+            message: 'Invalid Request',
+        });
+    }
+
+    const newUser = new User({
+        ...req.body,
+    });
+
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            User.findByIdAndUpdate(req.params.id, newUser, { new: true })
+                .then((user) => {
+                    if (!user) {
+                        return res.status(404).send({
+                            message: 'Not found with id ' + req.params.id,
+                        });
+                    }
+                    res.send(user);
+                })
+                .catch((err) => {
+                    if (err.kind === 'ObjectId') {
+                        return res.status(404).send({
+                            message: 'Not found with id ' + req.params.id,
+                        });
+                    }
+                    return res.status(500).send({
+                        message: 'Error updating user with id ' + req.params.id,
+                    });
+                });
+        });
+    });
 };

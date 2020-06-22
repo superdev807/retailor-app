@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Dialog, TextField, RadioGroup, FormControlLabel, Radio, NativeSelect, CircularProgress } from '@material-ui/core';
+import { Button, Dialog, TextField, NativeSelect, CircularProgress } from '@material-ui/core';
 import { DialogTitle, DialogContent, DialogActions } from 'components/DialogSubComponents';
 import validate from 'validate.js';
 import isEmpty from 'lodash/isEmpty';
@@ -8,10 +8,10 @@ import { useStyles } from './styles';
 
 const UserDialog = (props) => {
     const classes = useStyles();
-    const { open, setOpen, title, curUser, fetching } = props;
+    const { open, setOpen, title, curUser, handleSaveAction, actionSucceed, actionPending } = props;
     const [formState, setFormState] = useState({
         isValid: false,
-        values: { ...curUser },
+        values: { ...curUser, role: 'Client' },
         touched: {},
         errors: {},
     });
@@ -40,9 +40,15 @@ const UserDialog = (props) => {
         if (open && !isEmpty(curUser))
             setFormState((formState) => ({
                 ...formState,
-                values: { ...curUser },
+                values: { role: 'Client', ...curUser, password: '' },
             }));
     }, [open, curUser]);
+
+    useEffect(() => {
+        if (actionSucceed) {
+            setOpen(false);
+        }
+    }, [actionSucceed]);
 
     const handleChange = (event) => {
         event.persist && event.persist();
@@ -62,7 +68,25 @@ const UserDialog = (props) => {
 
     const hasError = (field) => (formState.touched[field] && formState.errors[field] ? true : false);
 
-    const handleSave = () => {};
+    const handleSave = () => {
+        const errors = validate(formState.values, schema);
+
+        setFormState((formState) => {
+            return {
+                ...formState,
+                isValid: errors ? false : true,
+                errors: errors || {},
+                touched: {
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    password: true,
+                },
+            };
+        });
+        if (errors) return;
+        handleSaveAction({ data: { role: 'Client', ...formState.values } });
+    };
 
     const handleClose = () => {
         setOpen(false);
@@ -138,10 +162,10 @@ const UserDialog = (props) => {
                 </div>
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={handleSave} disabled={fetching} color="primary" variant="contained">
-                    {title} {fetching && <CircularProgress size={20} />}
+                <Button autoFocus onClick={handleSave} disabled={actionPending} color="primary" variant="contained">
+                    {title} {actionPending && <CircularProgress size={20} />}
                 </Button>
-                <Button autoFocus onClick={handleClose} disabled={fetching} variant="contained">
+                <Button autoFocus onClick={handleClose} disabled={actionPending} variant="contained">
                     Cancel
                 </Button>
             </DialogActions>

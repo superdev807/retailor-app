@@ -11,7 +11,4 @@ export const schema = {
     password: {
         presence: { allowEmpty: false, message: 'is required' },
     },
-    role: {
-        presence: { allowEmpty: false, message: 'is required' },
-    },
 };

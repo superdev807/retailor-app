@@ -26,7 +26,6 @@ exports.readApartments = (req, res) => {
 };
 
 exports.updateApartment = (req, res) => {
-    console.log('>>', req.params, req.body);
     if (!req.params.id) {
         console.log('400 response');
         return res.status(400).send({
@@ -49,7 +48,7 @@ exports.updateApartment = (req, res) => {
                 });
             }
             return res.status(500).send({
-                message: 'Error updating note with id ' + req.params.id,
+                message: 'Error updating apartment with id ' + req.params.id,
             });
         });
 };
@@ -72,7 +71,7 @@ exports.deleteApartment = (req, res) => {
                 });
             }
             return res.status(500).send({
-                message: 'Error updating note with id ' + req.params.id,
+                message: 'Error deleting apartment with id ' + req.params.id,
             });
         });
 };
