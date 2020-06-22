@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { getCookie } from 'utils/cookie';
 import isEmpty from 'lodash/isEmpty';
-import { getUserDetails } from './redux/actions';
+import { getUserDetails, getUsers } from './redux/actions';
 import { makeSelectAuthUser, makeSelectIsAuthenticated } from './redux/selectors';
 import saga from './redux/saga';
 
@@ -30,6 +30,12 @@ export default function App() {
                     data: { email },
                 })
             );
+        }
+    }, [isAuthenticated, authUser]);
+
+    useEffect(() => {
+        if (appToken && !isEmpty(authUser)) {
+            dispatch(getUsers());
         }
     }, [isAuthenticated, authUser]);
 

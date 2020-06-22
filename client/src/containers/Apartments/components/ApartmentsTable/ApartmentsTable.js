@@ -44,6 +44,7 @@ const ApartmentsTable = (props) => {
         deletingApartment,
         deleteSucceed,
         updateSucceed,
+        realtors = [],
         ...rest
     } = props;
 
@@ -211,6 +212,7 @@ const ApartmentsTable = (props) => {
                 readApartments={readApartmentsFunc}
                 actionSucceed={updateSucceed}
                 orgApartment={curApartment}
+                realtors={realtors}
             />
         </Card>
     );

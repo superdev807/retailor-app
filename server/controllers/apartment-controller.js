@@ -19,7 +19,10 @@ exports.readApartments = (req, res) => {
         .then((result) => {
             return res.json(result);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).send({ message: err.message || 'Error occurred while reading the apartments.' });
+        });
 };
 
 exports.updateApartment = (req, res) => {

@@ -24,7 +24,6 @@ const updateApartment = apiCall({
     type: UPDATE_APARTMENT,
     method: 'put',
     path: ({ payload }) => {
-        console.log('<<<', payload);
         return `api/apartments/update/${payload.data._id}`;
     },
 });

@@ -8,6 +8,7 @@ import {
     SET_AUTH_ERROR,
     SET_AUTH_NOTIFICATION,
     GET_USER_INFO,
+    GET_USERS,
 } from './constants';
 import { getCookie } from 'utils/cookie';
 
@@ -70,5 +71,11 @@ export function getUserDetails(payload) {
     return {
         type: GET_USER_INFO,
         payload,
+    };
+}
+
+export function getUsers() {
+    return {
+        type: GET_USERS,
     };
 }

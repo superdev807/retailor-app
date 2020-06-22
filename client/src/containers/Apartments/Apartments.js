@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import Map from 'containers/Map';
-import { makeSelectAuthUser } from 'containers/App/redux/selectors';
+import { makeSelectAuthUser, makeSelectRealtors } from 'containers/App/redux/selectors';
 import {
     makeSelectCreatingApartment,
     makeSelectReadingApartment,
@@ -71,6 +71,7 @@ const Apartments = () => {
     const updateSucceed = useSelector(makeSelectApartmentUpdateSuccess);
     const successMsg = useSelector(makeSelectSuccessMsg);
     const failedMsg = useSelector(makeSelectFailedMsg);
+    const realtors = useSelector(makeSelectRealtors);
     const dispatch = useDispatch();
 
     const createApartmentFunc = (data) => {
@@ -130,6 +131,7 @@ const Apartments = () => {
                     pageNum={pageNum}
                     rowsPerPage={rowsPerPage}
                     createSucceed={createSucceed}
+                    realtors={realtors}
                 />
             )}
             <Grid container spacing={4}>
@@ -155,6 +157,7 @@ const Apartments = () => {
                             failedMessage={failedMsg}
                             setSuccessMessage={setSuccessMessage}
                             setFailedMessage={setFailedMessage}
+                            realtors={realtors}
                         />
                     </div>
                 </Grid>

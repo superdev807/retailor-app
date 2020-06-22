@@ -34,13 +34,14 @@ const ApartmentsToolbar = (props) => {
         apartmentCreatingState,
         readApartments,
         createSucceed,
+        realtors,
         ...rest
     } = props;
 
     const classes = useStyles();
 
     const handleClick = () => {
-        setOpen(!open);
+        setOpen(false);
     };
 
     const [open, setOpen] = useState(false);
@@ -49,22 +50,24 @@ const ApartmentsToolbar = (props) => {
         <div {...rest} className={clsx(classes.root, className)}>
             <div className={classes.row}>
                 <span className={classes.spacer} />
-                <Button color="primary" variant="contained" onClick={handleClick}>
+                <Button color="primary" variant="contained" onClick={() => setOpen(true)}>
                     Add Apartment
                 </Button>
                 <ApartmentDialog
                     title={'Add'}
                     role={role}
-                    email={email}
-                    userName={userName}
+                    email={role !== 'Administrator' ? email : realtors[0] ? realtors[0].email : ''}
+                    userName={role !== 'Administrator' ? userName : realtors[0] ? realtors[0].firstName + ' ' + realtors[0].lastName : ''}
                     fetching={creatingApartment}
                     handleSaveAction={createApartment}
                     pageNum={pageNum}
                     rowsPerPage={rowsPerPage}
                     readApartments={readApartments}
                     actionSucceed={createSucceed}
+                    orgApartment={{}}
                     open={open}
                     setOpen={setOpen}
+                    realtors={realtors}
                 />
             </div>
             <div className={classes.row}></div>

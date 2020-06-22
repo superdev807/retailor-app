@@ -25,6 +25,7 @@ const ApartmentDialog = (props) => {
         actionSucceed,
         orgApartment,
         open = false,
+        realtors = [],
         setOpen,
     } = props;
     const [geoCodeError, setGeoCodeError] = useState('');
@@ -43,57 +44,38 @@ const ApartmentDialog = (props) => {
 
     useEffect(() => {
         if (open) {
-            if (!orgApartment || isEmpty(orgApartment)) {
-                setFormState({
-                    isValid: false,
-                    values: { geoCodeType: 'Address' },
-                    touched: {},
-                    errors: {},
-                });
-            } else {
-                const {
-                    name,
-                    description,
-                    floorAreaSize,
-                    pricePerMonth,
-                    numberOfRooms,
-                    address,
-                    latitude,
-                    longitude,
-                    available_state,
-                    associated_realtor,
-                } = orgApartment;
-                setFormState({
-                    isValid: false,
-                    values: {
-                        geoCodeType: 'Address',
-                        name,
-                        description,
-                        floorAreaSize,
-                        pricePerMonth,
-                        numberOfRooms,
-                        address,
-                        latitude,
-                        longitude,
-                        available_state,
-                        associated_realtor,
-                    },
-                    touched: {
-                        name: true,
-                        description: true,
-                        floorAreaSize: true,
-                        pricePerMonth: true,
-                        numberOfRooms: true,
-                        address: true,
-                        latitude: true,
-                        longitude: true,
-                    },
-                    errors: {},
-                });
-            }
+            setFormState({
+                isValid: false,
+                values: { geoCodeType: 'Address' },
+                touched: {},
+                errors: {},
+            });
             setGeoCodeError('');
         }
-    }, [open, orgApartment]);
+    }, [open]);
+
+    useEffect(() => {
+        if (open && title === 'Update' && !isEmpty(orgApartment)) {
+            setFormState({
+                isValid: false,
+                values: {
+                    ...orgApartment,
+                    geoCodeType: 'Address',
+                },
+                touched: {
+                    name: true,
+                    description: true,
+                    floorAreaSize: true,
+                    pricePerMonth: true,
+                    numberOfRooms: true,
+                    address: true,
+                    latitude: true,
+                    longitude: true,
+                },
+                errors: {},
+            });
+        }
+    }, [open, title, orgApartment]);
 
     useEffect(() => {
         if (actionSucceed) {
@@ -119,6 +101,10 @@ const ApartmentDialog = (props) => {
     const handleSave = () => {
         const geoSchema = formState.values['geoCodeType'] === 'Address' ? addressSchema : geoCodeSchema;
         const errors = validate(formState.values, { ...schema, ...geoSchema });
+        const associated_realtor =
+            formState.values.associated_realtor && !isEmpty(formState.values.associated_realtor)
+                ? formState.values.associated_realtor
+                : { email, userName };
 
         setFormState((formState) => {
             return {
@@ -139,7 +125,7 @@ const ApartmentDialog = (props) => {
         });
         if (errors) return;
 
-        if (formState.values['geoCodeType'] === 'Address' && (!orgApartment || orgApartment.address !== formState.values['address'])) {
+        if (formState.values['geoCodeType'] === 'Address' && orgApartment.address !== formState.values['address']) {
             Geocode.fromAddress(formState.values['address']).then(
                 (response) => {
                     const { lat, lng } = response.results[0].geometry.location;
@@ -153,7 +139,7 @@ const ApartmentDialog = (props) => {
                         },
                     }));
                     const { geoCodeType, ...rest } = { ...formState.values, latitude: lat, longitude: lng };
-                    handleSaveAction({ data: { ...orgApartment, ...rest, associated_realtor: { email, userName } } });
+                    handleSaveAction({ data: { ...orgApartment, ...rest, associated_realtor } });
                 },
                 (error) => {
                     console.log('invalid address');
@@ -162,9 +148,7 @@ const ApartmentDialog = (props) => {
             );
         } else if (
             formState.values['geoCodeType'] === 'Geo code' &&
-            (!orgApartment ||
-                orgApartment.latitude !== formState.values['latitude'] ||
-                orgApartment.longitude !== formState.values['longitude'])
+            (orgApartment.latitude !== formState.values['latitude'] || orgApartment.longitude !== formState.values['longitude'])
         ) {
             Geocode.fromLatLng(formState.values['latitude'], formState.values['longitude']).then(
                 (response) => {
@@ -178,7 +162,7 @@ const ApartmentDialog = (props) => {
                         },
                     }));
                     const { geoCodeType, ...rest } = { ...formState.values, address };
-                    handleSaveAction({ data: { ...orgApartment, ...rest, associated_realtor: { email, userName } } });
+                    handleSaveAction({ data: { ...orgApartment, ...rest, associated_realtor } });
                 },
                 (error) => {
                     console.log('invalid lat or longitute');
@@ -187,7 +171,7 @@ const ApartmentDialog = (props) => {
             );
         } else {
             const { geoCodeType, ...rest } = { ...formState.values };
-            handleSaveAction({ data: { ...orgApartment, ...rest, associated_realtor: { email, userName } } });
+            handleSaveAction({ data: { ...orgApartment, ...rest, associated_realtor } });
         }
     };
 
@@ -204,6 +188,28 @@ const ApartmentDialog = (props) => {
                 [event.target.name]: true,
             },
         }));
+    };
+
+    const handleAssociatedRealtorChange = (event) => {
+        event.persist && event.persist();
+        const realtor = realtors[event.target.selectedIndex];
+        const associated_realtor = { email: event.target.value, userName: realtor.firstName + ' ' + realtor.lastName };
+        setFormState((formState) => ({
+            ...formState,
+            values: {
+                ...formState.values,
+                associated_realtor,
+            },
+        }));
+    };
+
+    const getAssociatedRealtorValue = (apartment) => {
+        if (apartment.associated_realtor) return apartment.associated_realtor.email;
+        return 'Invalid Realtor';
+    };
+
+    const getRealtorName = (realtor) => {
+        return realtor && realtor.firstName + ' ' + realtor.lastName;
     };
 
     return (
@@ -326,7 +332,7 @@ const ApartmentDialog = (props) => {
                             <FormControlLabel value="Geo code" control={<Radio />} label="Geo Code" className={classes.subArea2} />
                         </RadioGroup>
                         {geoCodeError && <div className={classes.formControl}>{geoCodeError}</div>}
-                        {title == 'Update' && (
+                        {title === 'Update' && (
                             <div className={classes.formControl}>
                                 <span>Available State:</span>
                                 <NativeSelect
@@ -336,7 +342,7 @@ const ApartmentDialog = (props) => {
                                     onChange={handleChange}
                                     className={classes.associated}
                                     classes={{ root: classes.associatedInput }}
-                                    defaultValue={orgApartment && orgApartment.available_state}>
+                                    defaultValue={orgApartment.available_state}>
                                     {['Available', 'Rented'].map((state, index) => (
                                         <option value={state} key={`availableState-${index}`}>
                                             {state}
@@ -350,14 +356,17 @@ const ApartmentDialog = (props) => {
                                 <span>Associated Realtor:</span>
                                 <NativeSelect
                                     disableUnderline
-                                    onChange={handleChange}
+                                    onChange={handleAssociatedRealtorChange}
                                     id="associated_realtor"
                                     name="associated_realtor"
                                     className={classes.associated}
-                                    classes={{ root: classes.associatedInput }}>
-                                    <option value="realtor">{'Alex John'}</option>
-                                    <option value="Admin">{'Alex John'}</option>
-                                    <option value="client">{'Alex John'}</option>
+                                    classes={{ root: classes.associatedInput }}
+                                    defaultValue={getAssociatedRealtorValue(orgApartment)}>
+                                    {realtors.map((realtor, index) => (
+                                        <option value={realtor.email} key={`realtor-${index}`}>
+                                            {getRealtorName(realtor)}
+                                        </option>
+                                    ))}
                                 </NativeSelect>
                             </div>
                         )}

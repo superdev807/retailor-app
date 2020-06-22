@@ -97,3 +97,15 @@ exports.getUserInfo = (req, res) => {
         }
     });
 };
+
+exports.getAllUsers = (req, res) => {
+    User.find({})
+        .then((result) => {
+            console.log('**', result);
+            return res.json(result);
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).send({ message: err.message || 'Error occurred while reading the apartments.' });
+        });
+};
