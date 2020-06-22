@@ -22,7 +22,6 @@ import NormalDialog from 'components/NormalDialog';
 import Notification from 'components/Notification';
 import isValidApartment from 'utils/checkValidApartment';
 import { useStyles } from './styles';
-import { setPageNum } from '../../redux/actions';
 
 const ApartmentsTable = (props) => {
     const {
@@ -64,12 +63,12 @@ const ApartmentsTable = (props) => {
     const handleRowsPerPageChange = (event) => {
         const newRowVal = parseInt(event.target.value);
         let newPageNum = pageNum;
-        console.log('prevPage Num', pageNum);
         while (newRowVal * (newPageNum - 1) > pageCnt) newPageNum--;
-        console.log('cur page num', newPageNum);
-        setPageNum(newPageNum);
-        setRowCount(parseInt(event.target.value));
+        setPageNumber(newPageNum);
+        setRowCount(newRowVal);
     };
+
+    console.log('((', pageNum);
 
     const openEditDlg = (apartment) => () => {
         setEditOpen(true);

@@ -19,7 +19,7 @@ const SimpleMap = (props) => {
             <GoogleMapReact
                 bootstrapURLKeys={{ key: 'replace your api key' }}
                 defaultCenter={center}
-                defaultZoom={11}
+                defaultZoom={1}
                 options={getMapOptions}>
                 {locations.map((location, index) => {
                     return <Marker key={`marker-${index}`} lat={location.lat} lng={location.lng} name="My Marker" color="blue" />;

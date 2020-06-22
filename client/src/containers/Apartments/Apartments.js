@@ -121,7 +121,6 @@ const Apartments = () => {
     };
 
     useEffect(() => {
-        console.log(pageCnt, pageNum, rowsPerPage);
         if ((prevPageNum === undefined || prevPageNum < pageNum) && (pageCnt > (pageNum - 1) * rowsPerPage || !pageCnt)) {
             readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
         }

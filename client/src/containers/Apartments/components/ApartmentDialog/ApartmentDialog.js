@@ -129,7 +129,6 @@ const ApartmentDialog = (props) => {
             Geocode.fromAddress(formState.values['address']).then(
                 (response) => {
                     const { lat, lng } = response.results[0].geometry.location;
-                    console.log(lat, lng);
                     setFormState((formState) => ({
                         ...formState,
                         values: {
@@ -153,7 +152,6 @@ const ApartmentDialog = (props) => {
             Geocode.fromLatLng(formState.values['latitude'], formState.values['longitude']).then(
                 (response) => {
                     const address = response.results[0].formatted_address;
-                    console.log(address);
                     setFormState((formState) => ({
                         ...formState,
                         values: {
