@@ -22,6 +22,7 @@ import NormalDialog from 'components/NormalDialog';
 import Notification from 'components/Notification';
 import isValidApartment from 'utils/checkValidApartment';
 import { useStyles } from './styles';
+import { setPageNum } from '../../redux/actions';
 
 const ApartmentsTable = (props) => {
     const {
@@ -52,17 +53,23 @@ const ApartmentsTable = (props) => {
 
     const classes = useStyles();
 
+    const [editOpen, setEditOpen] = useState(false);
+    const [removeDlgOpen, setRemoveDlgOpen] = useState(false);
+    const [curApartment, setCurApartment] = useState({});
+
     const handlePageChange = (event, page) => {
         setPageNumber(page + 1);
     };
 
     const handleRowsPerPageChange = (event) => {
+        const newRowVal = parseInt(event.target.value);
+        let newPageNum = pageNum;
+        console.log('prevPage Num', pageNum);
+        while (newRowVal * (newPageNum - 1) > pageCnt) newPageNum--;
+        console.log('cur page num', newPageNum);
+        setPageNum(newPageNum);
         setRowCount(parseInt(event.target.value));
     };
-
-    const [editOpen, setEditOpen] = useState(false);
-    const [removeDlgOpen, setRemoveDlgOpen] = useState(false);
-    const [curApartment, setCurApartment] = useState({});
 
     const openEditDlg = (apartment) => () => {
         setEditOpen(true);
@@ -204,6 +211,7 @@ const ApartmentsTable = (props) => {
                 handleAgreeAction={handleRemoveApartment}
                 handleCancelAction={handleRemoveClose}
                 processing={deletingApartment}
+                title={'apartment'}
             />
             <ApartmentDialog
                 title={'Update'}

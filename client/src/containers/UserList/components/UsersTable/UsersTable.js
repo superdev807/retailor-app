@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import UserDialog from '../UserDialog';
+import NormalDialog from 'components/NormalDialog';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Avatar, Table, TableBody, TableCell, TableHead, TableRow, Typography, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -32,13 +34,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UsersTable = (props) => {
-    const { className, users, ...rest } = props;
+    const { className, users, updateUserFunc, deleteUserFunc, ...rest } = props;
+
+    const [curUser, setCurUser] = useState({});
+    const [editOpen, setEditOpen] = useState(false);
+    const [removeDlgOpen, setRemoveDlgOpen] = useState(false);
 
     const classes = useStyles();
 
-    const openEditDlg = (user) => {};
+    const openEditDlg = (user) => () => {
+        setCurUser(user);
+        setEditOpen(true);
+    };
 
-    const openRemoveDlg = (user) => {};
+    const openRemoveDlg = (user) => () => {
+        setCurUser(user);
+        setRemoveDlgOpen(true);
+    };
+
+    const handleRemoveUser = () => {
+        // deleteApartmentFunc({ data: { id: curApartment._id } });
+    };
+
+    const handleRemoveClose = () => {
+        setRemoveDlgOpen(false);
+        setCurUser({});
+    };
 
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
@@ -88,6 +109,8 @@ const UsersTable = (props) => {
                     </div>
                 </PerfectScrollbar>
             </CardContent>
+            <UserDialog open={editOpen} setOpen={setEditOpen} title={'Update'} curUser={curUser} />
+            <NormalDialog open={removeDlgOpen} handleAgreeAction={handleRemoveUser} handleCancelAction={handleRemoveClose} title={'user'} />
         </Card>
     );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Dialog, TextField, RadioGroup, FormControlLabel, Radio, NativeSelect, CircularProgress } from '@material-ui/core';
 import { DialogTitle, DialogContent, DialogActions } from 'components/DialogSubComponents';
 import validate from 'validate.js';
+import isEmpty from 'lodash/isEmpty';
 import { schema } from './schema';
 import { useStyles } from './styles';
 
@@ -17,13 +18,31 @@ const UserDialog = (props) => {
 
     useEffect(() => {
         const errors = validate(formState.values, schema);
-
         setFormState((formState) => ({
             ...formState,
             isValid: errors ? false : true,
             errors: errors || {},
         }));
     }, [formState.values]);
+
+    useEffect(() => {
+        if (open) {
+            setFormState({
+                isValid: false,
+                values: {},
+                touched: {},
+                errors: {},
+            });
+        }
+    }, [open]);
+
+    useEffect(() => {
+        if (open && !isEmpty(curUser))
+            setFormState((formState) => ({
+                ...formState,
+                values: { ...curUser },
+            }));
+    }, [open, curUser]);
 
     const handleChange = (event) => {
         event.persist && event.persist();
