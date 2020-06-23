@@ -21,8 +21,9 @@ export function deleteUser(payload) {
     };
 }
 
-export function getUsers() {
+export function getUsers(payload) {
     return {
         type: GET_USERS,
+        payload,
     };
 }

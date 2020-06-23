@@ -75,3 +75,26 @@ exports.deleteApartment = (req, res) => {
             });
         });
 };
+
+exports.filterApartment = (req, res) => {
+    let { floorAreaSizeMin, floorAreaSizeMax, pricePerMonthMin, pricePerMonthMax, numberOfRoomsMin, numberOfRoomsMax } = req.body;
+    floorAreaSizeMin = floorAreaSizeMin ? floorAreaSizeMin : 0;
+    floorAreaSizeMax = floorAreaSizeMax ? floorAreaSizeMax : 100000;
+    pricePerMonthMin = pricePerMonthMin ? pricePerMonthMin : 0;
+    pricePerMonthMax = pricePerMonthMax ? pricePerMonthMax : 100000;
+    numberOfRoomsMin = numberOfRoomsMin ? numberOfRoomsMin : 0;
+    numberOfRoomsMax = numberOfRoomsMax ? numberOfRoomsMax : 200;
+    Apartment.find({
+        floorAreaSize: { $gte: floorAreaSizeMin, $lte: floorAreaSizeMax },
+        pricePerMonth: { $gte: pricePerMonthMin, $lte: pricePerMonthMax },
+        numberOfRooms: { $gte: numberOfRoomsMin, $lte: numberOfRoomsMax },
+    })
+        .then((result) => {
+            return res.json(result);
+        })
+        .catch((err) => {
+            return res.status(404).send({
+                message: 'Invalid Request',
+            });
+        });
+};

@@ -214,7 +214,6 @@ const SignUp = () => {
                                 <NativeSelect className={classes.userSelectbox} onChange={handleChange} name="role">
                                     <option>Client</option>
                                     <option>Realtor</option>
-                                    <option>Administrator</option>
                                 </NativeSelect>
                                 <Button
                                     className={classes.signUpButton}

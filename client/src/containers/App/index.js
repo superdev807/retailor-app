@@ -42,7 +42,7 @@ export default function App() {
 
     useEffect(() => {
         if (appToken && !isEmpty(authUser)) {
-            dispatch(getUsers());
+            dispatch(getUsers({ role: authUser.role }));
         }
     }, [isAuthenticated, authUser, dispatch, appToken]);
 

@@ -38,8 +38,8 @@ const UserList = () => {
     const dispatch = useDispatch();
 
     const reloadUsers = useCallback(() => {
-        dispatch(getUsers());
-    }, [dispatch]);
+        dispatch(getUsers({ role: authUser.role }));
+    }, [dispatch, authUser]);
 
     useEffect(() => {
         reloadUsers();
@@ -49,7 +49,7 @@ const UserList = () => {
         if (authUser.role !== 'Administrator') {
             history.push('/apartment');
         }
-    }, [authUser.role]);
+    }, [authUser.role, history]);
 
     const createUserFunc = (data) => {
         dispatch(createUser(data));

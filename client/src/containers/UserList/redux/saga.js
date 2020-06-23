@@ -5,7 +5,7 @@ import { CREATE_USER, GET_USERS, UPDATE_USER, DELETE_USER } from './constants';
 const getUsers = apiCall({
     type: GET_USERS,
     method: 'get',
-    path: () => 'api/users/allUsers',
+    path: ({ payload }) => `api/users/allUsers/${payload.role}`,
 });
 
 const createUser = apiCall({

@@ -122,12 +122,6 @@ const Apartments = () => {
         dispatch(setInitLoadingState());
     };
 
-    const getLocations = (datas) => {
-        return datas.map((data) => {
-            return { lat: data.latitude, lng: data.longitude };
-        });
-    };
-
     useEffect(() => {
         if ((prevPageNum === undefined || prevPageNum < pageNum) && (pageCnt > (pageNum - 1) * rowsPerPage || !pageCnt)) {
             readApartmentsFunc({ pageNum, pageLimit: rowsPerPage });
@@ -180,7 +174,7 @@ const Apartments = () => {
                     </div>
                 </Grid>
                 <Grid item lg={4} md={12} xl={3} xs={12}>
-                    <Map locations={getLocations(apartments)} />
+                    <Map locations={apartments} />
                 </Grid>
             </Grid>
         </div>

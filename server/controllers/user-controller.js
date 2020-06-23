@@ -2,8 +2,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
 const User = require('../models/User');
+const Apartment = require('../models/Aparment');
 const validateRegisterInput = require('../validation/register');
 const validateLoginInput = require('../validation/login');
+const { last } = require('lodash');
 
 exports.registerUser = (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
@@ -99,6 +101,9 @@ exports.getUserInfo = (req, res) => {
 };
 
 exports.getAllUsers = (req, res) => {
+    if (req.params.role === 'Client') {
+        return res.status(500).send({ message: "Client can't access to the user list" });
+    }
     User.find({})
         .then((result) => {
             return res.json(result);
@@ -116,9 +121,20 @@ exports.deleteUser = (req, res) => {
             message: 'Invalid Request',
         });
     }
+
+    const { email, firstName, lastName } = req.body;
+    const userName = firstName + ' ' + lastName;
+
     User.findByIdAndRemove(req.params.id)
         .then(() => {
-            return res.json(req.body);
+            Apartment.deleteMany({ associated_realtor: { email, userName } })
+                .then(() => {
+                    return res.json(req.body);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    return res.status(500).send({ message: err.message || 'Error occurred while removing the associated apartments' });
+                });
         })
         .catch((err) => {
             if (err.kind === 'ObjectId') {

@@ -155,8 +155,8 @@ const ApartmentsTable = (props) => {
                                         <TableRow className={classes.tableRow} key={`apartment-${index}`}>
                                             <TableCell className={classes.normalTableCell}>{apartment.name}</TableCell>
                                             <TableCell className={classes.descriptionCell}>{apartment.description}</TableCell>
-                                            <TableCell className={classes.normalTableCell}>{apartment.pricePerMonth}</TableCell>
                                             <TableCell className={classes.normalTableCell}>{apartment.floorAreaSize}</TableCell>
+                                            <TableCell className={classes.normalTableCell}>{apartment.pricePerMonth}</TableCell>
                                             <TableCell className={classes.normalTableCell}>{apartment.numberOfRooms}</TableCell>
                                             <TableCell className={classes.normalTableCell}>{apartment.address}</TableCell>
                                             <TableCell className={classes.normalTableCell}>

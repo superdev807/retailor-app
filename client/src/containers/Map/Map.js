@@ -22,7 +22,15 @@ const SimpleMap = (props) => {
                 defaultZoom={1}
                 options={getMapOptions}>
                 {locations.map((location, index) => {
-                    return <Marker key={`marker-${index}`} lat={location.lat} lng={location.lng} name="My Marker" color="blue" />;
+                    return (
+                        <Marker
+                            key={`marker-${index}`}
+                            lat={location.latitude}
+                            lng={location.longitude}
+                            name={`Name: ${location.name}\nAddress: ${location.address}\nFloor Area Size: ${location.floorAreaSize}\nPrice Per Month: ${location.pricePerMonth}\nNumber of rooms: ${location.numberOfRooms}\nAvailable state: ${location.available_state}`}
+                            color="blue"
+                        />
+                    );
                 })}
             </GoogleMapReact>
         </div>
