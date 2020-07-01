@@ -136,9 +136,6 @@ const SignUp = () => {
                                 <b>Manage Apartment Rentals</b>
                             </Typography>
                             <div className={classes.person}>
-                                <Typography className={classes.name} variant="body1">
-                                    <b>Daniel Jason</b>
-                                </Typography>
                                 <Typography className={classes.bio} variant="body2">
                                     <b>NodeJS | React | MongoDB</b>
                                 </Typography>

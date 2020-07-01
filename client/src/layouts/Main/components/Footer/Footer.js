@@ -17,7 +17,7 @@ const Footer = (props) => {
 
     return (
         <div {...rest} className={clsx(classes.root, className)}>
-            <Typography variant="caption">Created by Daniel Jason : 2020 June</Typography>
+            <Typography variant="caption">2020 June</Typography>
         </div>
     );
 };

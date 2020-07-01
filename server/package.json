@@ -8,11 +8,7 @@
         "app": "nodemon app.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://git.toptal.com/screening/daniel-jason.git"
-    },
-    "author": "Daniel Jason",
+    "author": "Austin Detzel",
     "license": "ISC",
     "dependencies": {
         "bcryptjs": "^2.4.3",
